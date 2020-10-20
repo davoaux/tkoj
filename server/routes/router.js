@@ -1,12 +1,14 @@
-const express = require("express");
-const path = require("path");
-const mongoose = require("mongoose");
-
-const userController = require("../controllers/userController");
+const express = require('express');
+const userController = require('../controllers/userController');
 
 const router = express.Router();
 
-router.get("/", userController.createUser);
-router.post("/create-user", userController.processCreateUser);
+router.get('/', userController.menu);
+router.post('/signup', userController.signUp);
+router.post('/login', userController.login);
+router.get('/deactivate/:id', userController.deactivateUser);
+
+router.get('/notes', (req, res) => res.send('TODO'));
+router.get('/notes/:id', (req, res) => res.send('TODO'));
 
 module.exports = router;
