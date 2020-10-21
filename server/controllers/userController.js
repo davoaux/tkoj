@@ -11,14 +11,13 @@ module.exports = {
   signUp: async (req, res) => {
     const { email, password } = req.body;
 
-    await User.find({ email: req.body.email }, async (err, user) => {
+    await User.find({ email: email }, async (err, user) => {
       if (err) return res.status(500).send(err);
 
       if (user.length != 0)
         return res.status(500).send('Email is already registered');
 
       const hash = await bcrypt.hash(password, 10);
-
       User.create({
         email: email,
         password: hash,
@@ -44,7 +43,7 @@ module.exports = {
   },
 
   deactivateUser: (req, res) => {
-    User.updateOne({ id: req.params.id }, { active: false });
+    User.updateOne({ _id: req.params.id }, { active: false });
     res.send('TEST: user deactivated');
   },
 };
