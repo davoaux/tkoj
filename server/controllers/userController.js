@@ -1,7 +1,6 @@
 const path = require('path');
 const bcrypt = require('bcrypt');
-const { User } = require('../models/index');
-const saltRounds = 10;
+const User = require('../models/User');
 
 module.exports = {
   menu: (req, res) => {
@@ -10,40 +9,33 @@ module.exports = {
 
   signUp: async (req, res) => {
     const { email, password } = req.body;
+    try {
+      const user = await User.findOne({ email });
+      if (user) return res.status(500).json({ msg: 'Email is already registered' });
 
-    await User.find({ email: email }, async (err, user) => {
-      if (err) return res.status(500).send(err);
-
-      if (user.length != 0)
-        return res.status(500).send('Email is already registered');
-
-      const hash = await bcrypt.hash(password, 10);
-      User.create({
-        email: email,
-        password: hash,
+      return User.create({ email, password }, (err, savedUser) => {
+        if (err) return res.status(500).json({ msg: 'Something went wrong saving user', err });
+        return res.status(200).json({ msg: 'User created', user: savedUser });
       });
-
-      res.send(`New user added to the database!`);
-    });
+    } catch (err) {
+      return res.status(500).json(err);
+    }
   },
 
   login: async (req, res) => {
     const { email, password } = req.body;
+    if (!email || !password) return res.status(400).json({ msg: 'Email and/or password missing' });
 
-    await User.findOne({ email }, async (err, user) => {
-      if (err) return res.status(500).send(err);
-
-      if (!user) return res.status(500).send('User not found');
+    try {
+      const user = await User.findOne({ email });
+      if (!user) return res.status(200).json({ msg: 'User not found' });
 
       const match = await bcrypt.compare(password, user.password);
-      if (!match) return res.send('Incorrect password');
+      if (!match) return res.status(200).json({ msg: 'Incorrect password' });
 
-      res.send('The email and password are correct! 👍');
-    });
-  },
-
-  deactivateUser: (req, res) => {
-    User.updateOne({ _id: req.params.id }, { active: false });
-    res.send('TEST: user deactivated');
+      return res.status(200).json({ msg: 'The email and password are correct! 👍', user });
+    } catch (err) {
+      return res.status(500).json(err);
+    }
   },
 };

@@ -1,21 +1,24 @@
-const { User } = require('../../models/index');
+const User = require('../../models/User');
 
 module.exports = {
   getAllUsers: (req, res) => {
     User.find({}, (err, users) => {
-      if (err) {
-        return res.status(500).send(err);
-      }
-      res.send(users);
+      if (err) return res.status(500).send(err);
+      return res.status(200).json(users);
     });
   },
 
-  getUser: (req, res) => {
+  getUserById: (req, res) => {
     User.findOne({ _id: req.params.id }, (err, user) => {
-      if (err) {
-        return res.status(500).send(err);
-      }
-      res.send(user);
+      if (err) return res.status(500).send(err);
+      return res.status(200).json(user);
     });
-  }
+  },
+
+  deactivateUser: (req, res) => {
+    User.findByIdAndUpdate(req.params.id, { active: false }, (err, user) => {
+      if (err) return res.status(500).json(err);
+      return res.status(200).json({ msg: 'User deactivated', user });
+    });
+  },
 };

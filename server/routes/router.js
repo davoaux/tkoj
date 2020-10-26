@@ -1,10 +1,8 @@
-const userController = require('../controllers/userController');
-
 const router = require('express').Router();
+const userController = require('../controllers/userController');
 
 router.get('/', userController.menu);
 router.post('/signup', userController.signUp);
 router.post('/login', userController.login);
-router.get('/deactivate/:id', userController.deactivateUser);
 
 module.exports = router;
