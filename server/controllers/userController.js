@@ -1,10 +1,9 @@
-const path = require('path');
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
 
 module.exports = {
   menu: (req, res) => {
-    res.sendFile(path.join(__dirname, '../form.html'));
+    res.send('Server API');
   },
 
   signUp: async (req, res) => {
@@ -14,7 +13,11 @@ module.exports = {
       if (user) return res.status(500).json({ msg: 'Email is already registered' });
 
       return User.create({ email, password }, (err, savedUser) => {
-        if (err) return res.status(500).json({ msg: 'Something went wrong saving user', err });
+        if (err) {
+          return res
+            .status(500)
+            .json({ msg: 'Something went wrong saving user', err });
+        }
         return res.status(200).json({ msg: 'User created', user: savedUser });
       });
     } catch (err) {
@@ -33,7 +36,9 @@ module.exports = {
       const match = await bcrypt.compare(password, user.password);
       if (!match) return res.status(200).json({ msg: 'Incorrect password' });
 
-      return res.status(200).json({ msg: 'The email and password are correct! 👍', user });
+      return res
+        .status(200)
+        .json({ msg: 'The email and password are correct! 👍', user });
     } catch (err) {
       return res.status(500).json(err);
     }
