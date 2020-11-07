@@ -15,6 +15,13 @@ module.exports = {
     });
   },
 
+  getUserByEmail: (req, res) => {
+    User.findOne({ email: req.params.email }, (err, user) => {
+      if (err) return res.status(500).send(err);
+      return res.status(200).json(user);
+    });
+  },
+
   deactivateUser: (req, res) => {
     User.findByIdAndUpdate(req.params.id, { active: false }, (err, user) => {
       if (err) return res.status(500).json(err);

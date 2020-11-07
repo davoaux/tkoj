@@ -4,6 +4,7 @@ const noteController = require('../controllers/api/noteController');
 
 router.get('/users', userController.getAllUsers);
 router.get('/users/:id', userController.getUserById);
+router.get('/users/email/:email', userController.getUserByEmail);
 router.put('/users/deactivate/:id', userController.deactivateUser);
 
 router.get('/notes', noteController.getAllNotes);
