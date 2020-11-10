@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { useState } from 'react';
 import './Login.css';
 
 const Login: React.FC = () => {
@@ -7,13 +7,12 @@ const Login: React.FC = () => {
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     // TODO
-    console.log('handle');
+    event.preventDefault();
     const response = await fetch(
       `http://localhost:3001/api/users/email/${email}`
     );
     const data = await response.json();
     console.log(data);
-    event.preventDefault();
   }
 
   return (

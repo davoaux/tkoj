@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Login from '../Login/Login';
+import Login from '../Auth/Login/Login';
+import Register from '../Auth/Register/Register';
+import NavBar from '../NavBar/NavBar';
 import Notes from '../Notes/Notes';
 import './App.css';
 
@@ -9,17 +11,12 @@ const Home: React.FC = () => <h1>Home</h1>;
 const App: React.FC = () => {
   return (
     <Router>
-      <h1>TODO navbar</h1>
+      <NavBar />
       <Switch>
-        <Route exact path="/">
-          <Home />
-        </Route>
-        <Route path="/login">
-          <Login />
-        </Route>
-        <Route path="/notes">
-          <Notes />
-        </Route>
+        <Route exact path="/" component={Home} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/register" component={Register} />
+        <Route exact path="/notes" component={Notes} />
       </Switch>
     </Router>
   );
