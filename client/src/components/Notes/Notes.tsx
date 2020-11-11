@@ -1,11 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import getNotes from '../../services/noteService';
 import './Notes.css';
 
-interface NoteProps {
+interface INoteProps {
   title: string;
   content?: string;
 }
+
+const Note: React.FC<INoteProps> = ({ title, content }: INoteProps) => {
+  return (
+    <div className="Note">
+      <h3>{title}</h3>
+      <p>{content}</p>
+    </div>
+  );
+};
 
 interface INotes {
   links: Array<string>;
@@ -17,25 +25,22 @@ interface INotes {
   _v: number;
 }
 
-const Note: React.FC<NoteProps> = ({ title, content }: NoteProps) => {
-  return (
-    <div className="Note">
-      <h3>{title}</h3>
-      <p>{content}</p>
-    </div>
-  );
-};
-
 const Notes: React.FC = () => {
   const [notes, setNotes] = useState<INotes[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  async function loadNotes(): Promise<void> {
+    const response = await fetch('/api/notes');
+    const notes = await response.json();
+    setNotes(notes);
+  }
 
   useEffect(() => {
-    const fetchData = async () => {
-      const res = await getNotes();
-      setNotes(res);
-    };
-    fetchData();
+    loadNotes();
+    setIsLoading(false);
   }, []);
+
+  if (isLoading) return <p>Loading...</p>;
 
   return (
     <div className="Notes">

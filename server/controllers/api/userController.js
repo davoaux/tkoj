@@ -6,8 +6,9 @@ module.exports = {
     const { name, email, password } = req.body;
     try {
       const user = await User.findOne({ email });
-      if (user) return res.status(500).json({ message: 'Email is already registered' });
-
+      if (user) {
+        return res.status(500).json({ message: 'Email is already registered' });
+      }
       const newUser = await User.create({ name, email, password });
 
       return res.status(201).json({
@@ -29,11 +30,8 @@ module.exports = {
       if (!user) return res.status(200).json({ message: 'User not found' });
 
       if (!comparePasswords(password, user.password)) {
-        return res.status(200).json({
-          message: 'Password does not match',
-        });
+        return res.status(200).json({ message: 'Password does not match' });
       }
-
       const token = generateToken(user);
 
       return res.status(200).json({

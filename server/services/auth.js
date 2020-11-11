@@ -6,7 +6,8 @@ module.exports = {
     await bcrypt.compare(password, hashedPassword);
   },
 
-  generateToken: (user) => jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-    expiresIn: 1209600, // 2 weeks
-  }),
+  generateToken: (user) =>
+    jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+      expiresIn: 86400, // 1 day
+    }),
 };
