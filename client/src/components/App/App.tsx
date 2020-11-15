@@ -3,10 +3,9 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Login from '../auth/Login/Login';
 import Register from '../auth/Register/Register';
 import NavBar from '../layout/NavBar/NavBar';
-import Notes from '../Notes/Notes';
+import Home from '../pages/Home';
+import Notes from '../pages/Notes';
 import './App.css';
-
-const Home: React.FC = () => <h1>Home</h1>;
 
 const App: React.FC = () => {
   return (

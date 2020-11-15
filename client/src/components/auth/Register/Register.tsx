@@ -2,23 +2,37 @@ import React, { useState } from 'react';
 import './Register.css';
 
 const Register: React.FC = () => {
-  const [state, setState] = useState({
+  const [userData, setUserData] = useState({
     name: '',
     email: '',
     password: '',
-    errors: {},
   });
 
-  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const value = event.target.value;
-    setState({
-      ...state,
-      [event.target.name]: value,
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const value = e.target.value;
+    setUserData({
+      ...userData,
+      [e.target.name]: value,
     });
   }
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    // TODO
+  // TODO
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    // TODO validate form fields
+    // localStorage.getItem('user');
+    const user = userData;
+    const response = await fetch('/api/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-auth-token': 'token', // TODO token
+      },
+      body: JSON.stringify(user),
+    });
+
+    return console.log(response);
   }
 
   return (
@@ -30,7 +44,7 @@ const Register: React.FC = () => {
           <input
             type="text"
             name="name"
-            value={state.name}
+            value={userData.name}
             onChange={handleChange}
           />
         </label>
@@ -39,7 +53,7 @@ const Register: React.FC = () => {
           <input
             type="email"
             name="email"
-            value={state.email}
+            value={userData.email}
             onChange={handleChange}
           />
         </label>
@@ -48,7 +62,7 @@ const Register: React.FC = () => {
           <input
             type="password"
             name="password"
-            value={state.password}
+            value={userData.password}
             onChange={handleChange}
           />
         </label>

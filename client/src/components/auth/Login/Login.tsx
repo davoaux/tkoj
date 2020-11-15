@@ -5,14 +5,19 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  // TODO
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    // TODO
     event.preventDefault();
-    const response = await fetch(
-      `http://localhost:3001/api/users/email/${email}`
-    );
-    const data = await response.json();
-    console.log(data);
+
+    const response = await fetch('/api/login', {
+      method: 'POST',
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
+
+    console.log(response);
   }
 
   return (

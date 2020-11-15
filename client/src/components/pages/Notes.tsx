@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import './Notes.css';
 
 interface INoteProps {
   title: string;
