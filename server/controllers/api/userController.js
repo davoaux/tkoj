@@ -27,10 +27,10 @@ module.exports = {
     }
     try {
       const user = await User.findOne({ email });
-      if (!user) return res.status(200).json({ message: 'User not found' });
+      if (!user) return res.status(401).json({ message: 'User not found' });
 
-      if (!comparePasswords(password, user.password)) {
-        return res.status(200).json({ message: 'Password does not match' });
+      if (!(await comparePasswords(password, user.password))) {
+        return res.status(401).json({ message: 'Password does not match' });
       }
       const token = generateToken(user);
 

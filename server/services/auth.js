@@ -3,7 +3,11 @@ const jwt = require('jsonwebtoken');
 
 module.exports = {
   comparePasswords: async (password, hashedPassword) => {
-    await bcrypt.compare(password, hashedPassword);
+    try {
+      return await bcrypt.compare(password, hashedPassword);
+    } catch (error) {
+      return false;
+    }
   },
 
   generateToken: (user) =>
@@ -11,7 +15,5 @@ module.exports = {
       expiresIn: 86400, // 1 day
     }),
 
-  decodeToken: (token) => {
-    return jwt.verify(token, process.env.JWT_SECRET);
-  },
+  decodeToken: (token) => jwt.verify(token, process.env.JWT_SECRET),
 };
