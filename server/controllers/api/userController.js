@@ -13,7 +13,7 @@ module.exports = {
 
       return res.status(201).json({
         message: 'User registered',
-        data: newUser,
+        user: newUser,
       });
     } catch (err) {
       return res.status(500).json({ message: 'Register failed', error: err });

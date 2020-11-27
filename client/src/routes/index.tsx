@@ -1,9 +1,9 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import Login from '../auth/Login/Login';
-import Register from '../auth/Register/Register';
+import Login from '../components/auth/Login/Login';
+import Register from '../components/auth/Register/Register';
 import Home from '../pages/Home';
-import AuthRoute from './AuthRoute';
+import UserRoute from './UserRoute';
 
 // Notes won't render yet because I have yet to setup the token handling
 // so this is a temp component to render
@@ -14,8 +14,8 @@ const Routes: React.FC = () => {
     <Switch>
       <Route exact path="/login" component={Login} />
       <Route exact path="/register" component={Register} />
-      <AuthRoute exact path="/" component={Home} />
-      <AuthRoute exact path="/notes" component={TestComponent} />
+      <UserRoute exact path="/" component={Home} />
+      <UserRoute exact path="/notes" component={TestComponent} />
     </Switch>
   );
 };
