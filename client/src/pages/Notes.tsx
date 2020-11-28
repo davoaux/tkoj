@@ -29,7 +29,14 @@ const Notes: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   async function loadNotes(): Promise<void> {
-    const response = await fetch('/api/notes');
+    const token = localStorage.getItem('token');
+    const response = await fetch('/api/notes', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
+      },
+    });
     const notes = await response.json();
     setNotes(notes);
   }
