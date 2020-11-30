@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import NavBar from '../components/layout/NavBar/NavBar';
+import SideBar from '../components/layout/SideBar/SideBar';
 
 interface INoteProps {
   title: string;
@@ -30,15 +32,19 @@ const Notes: React.FC = () => {
 
   async function loadNotes(): Promise<void> {
     const token = localStorage.getItem('token');
-    const response = await fetch('/api/notes', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token,
-      },
-    });
-    const notes = await response.json();
-    setNotes(notes);
+    const storedUser = localStorage.getItem('user');
+    if (typeof storedUser === 'string') {
+      const user = JSON.parse(storedUser);
+      const response = await fetch(`/api/user/${user._id}/notes`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token,
+        },
+      });
+      const notes = await response.json();
+      setNotes(notes);
+    }
   }
 
   useEffect(() => {
@@ -49,12 +55,16 @@ const Notes: React.FC = () => {
   if (isLoading) return <p>Loading...</p>;
 
   return (
-    <div className="Notes">
-      <h1>Notes</h1>
-      {notes.map((note) => (
-        <Note key={note._id} title={note.title} content={note.content} />
-      ))}
-    </div>
+    <>
+      <NavBar />
+      <SideBar />
+      <div className="Notes">
+        <h1>Notes</h1>
+        {notes.map((note) => (
+          <Note key={note._id} title={note.title} content={note.content} />
+        ))}
+      </div>
+    </>
   );
 };
 

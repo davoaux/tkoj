@@ -7,6 +7,7 @@ router.post('/register', userController.register);
 router.post('/login', userController.login);
 router.get('/users', auth, userController.getAllUsers);
 router.get('/users/:id', auth, userController.getUserById);
+router.get('/user/:id/notes', auth, userController.getNotes);
 router.get('/users/email/:email', auth, userController.getUserByEmail);
 router.put('/users/deactivate/:id', auth, userController.deactivateUser);
 

@@ -5,12 +5,11 @@ import { AuthContext } from '../../../context/auth';
 import './NavBar.css';
 
 const Logout: React.FC = () => {
-  const { setIsLogged } = useContext(AuthContext);
+  const { logout } = useContext(AuthContext);
   const history = useHistory();
 
   const handleClick = (): void => {
-    localStorage.clear();
-    setIsLogged(false);
+    logout();
     history.push('/');
   };
 

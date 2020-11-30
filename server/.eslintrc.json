@@ -10,6 +10,7 @@
   },
   "rules": {
     "no-console": "off",
-    "camelcase": "off"
+    "camelcase": "off",
+    "no-underscore-dangle": ["error", { "allow": ["__v", "_id" ] }]
   }
 }

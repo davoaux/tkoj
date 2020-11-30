@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import NavBar from '../components/layout/NavBar/NavBar';
 import SideBar from '../components/layout/SideBar/SideBar';
+import { AuthContext } from '../context/auth';
 
 const Home: React.FC = () => {
+  const { user } = useContext(AuthContext);
+
   return (
     <>
+      <NavBar />
       <SideBar />
-      <h1>Home</h1>
+      <h1>Welcome {user?.name}</h1>
     </>
   );
 };

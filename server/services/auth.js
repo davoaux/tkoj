@@ -10,8 +10,8 @@ module.exports = {
     }
   },
 
-  generateToken: (user) =>
-    jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+  generateToken: (id) =>
+    jwt.sign({ id }, process.env.JWT_SECRET, {
       expiresIn: 86400, // 1 day
     }),
 

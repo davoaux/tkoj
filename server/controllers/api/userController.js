@@ -1,3 +1,4 @@
+const Note = require('../../models/Note');
 const User = require('../../models/User');
 const { comparePasswords, generateToken } = require('../../services/auth');
 
@@ -32,11 +33,15 @@ module.exports = {
       if (!(await comparePasswords(password, user.password))) {
         return res.status(401).json({ message: 'Password does not match' });
       }
-      const token = generateToken(user);
+      const token = generateToken(user.id);
+
+      // Remove fields from the object that will be send back to the client
+      user.password = undefined;
+      user.__v = undefined;
 
       return res.status(200).json({
         token,
-        message: 'The email and password are correct! 👍',
+        user,
       });
     } catch (err) {
       return res.status(500).json({ message: 'Login failed', error: err });
@@ -57,6 +62,16 @@ module.exports = {
     try {
       const user = await User.findOne({ _id: id });
       return res.status(200).json(user);
+    } catch (err) {
+      return res.status(500).json({ error: err });
+    }
+  },
+
+  getNotes: async (req, res) => {
+    const { id } = req.params;
+    try {
+      const notes = await Note.find({ userId: id });
+      return res.status(200).json(notes);
     } catch (err) {
       return res.status(500).json({ error: err });
     }

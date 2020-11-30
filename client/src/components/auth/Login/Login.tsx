@@ -7,23 +7,13 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const history = useHistory();
-  const { isLogged, setIsLogged } = useContext(AuthContext);
+  const { isLogged, login } = useContext(AuthContext);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (isLogged) history.push('/');
-    const response = await fetch('/api/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email,
-        password,
-      }),
-    });
-    if (!response.ok) return console.log('Login error');
-    const data = await response.json();
-    localStorage.setItem('token', data.token);
-    setIsLogged(true);
+    const user = await login(email, password);
+    if (!user) return console.log('Login error');
     history.push('/');
   }
 
