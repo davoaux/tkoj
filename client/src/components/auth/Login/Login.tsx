@@ -12,6 +12,7 @@ const Login: React.FC = () => {
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (isLogged) history.push('/');
+
     const user = await login(email, password);
     if (!user) return console.log('Login error');
     history.push('/');

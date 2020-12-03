@@ -1,0 +1,10 @@
+.Dashboard {
+  margin-left: 160px;
+  position: absolute;
+}
+
+textarea {
+  border: 2px solid #000;
+  border-radius: 0;
+  resize: none;
+}
