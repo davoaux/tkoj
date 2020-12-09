@@ -29,6 +29,13 @@ module.exports = {
     });
   },
 
+  updateNote: async (req, res) => {
+    return Note.updateOne({ _id: req.body._id }, req.body, (err) => {
+      if (err) return res.status(500).json(err);
+      return res.json({ msg: 'Note updated' });
+    });
+  },
+
   deleteNote: (req, res) => {
     Note.findByIdAndDelete(req.params.id, (err, note) => {
       if (err) return res.status(500).json(err);

@@ -1,24 +1,17 @@
-interface IUserService {
+import { IRegisterData } from '../types';
+
+interface IAuthService {
   register: Function;
   login: Function;
 }
 
-interface IUserData {
-  name: string;
-  email: string;
-  password: string;
-}
-
-export class UserService implements IUserService {
-  async register(userData: IUserData): Promise<Response> {
+export class AuthService implements IAuthService {
+  async register(registerData: IRegisterData): Promise<Response> {
+    const { name, email, password } = registerData;
     const response = await fetch('/api/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name: userData.name,
-        email: userData.email,
-        password: userData.password,
-      }),
+      body: JSON.stringify({ name, email, password }),
     });
 
     return response;

@@ -14,6 +14,7 @@ router.put('/users/deactivate/:id', auth, userController.deactivateUser);
 router.get('/notes', auth, noteController.getAllNotes);
 router.get('/notes/:id', auth, noteController.getNoteById);
 router.post('/notes', auth, noteController.createNote);
+router.put('/notes', auth, noteController.updateNote);
 router.delete('/notes/:id', auth, noteController.deleteNote);
 
 module.exports = router;

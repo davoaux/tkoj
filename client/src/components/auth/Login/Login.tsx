@@ -1,7 +1,6 @@
 import React, { FormEvent, useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { AuthContext } from '../../../context/auth';
-import './Login.css';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');

@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { AuthContext } from '../../../context/auth';
-import './NavBar.css';
+import { AuthContext } from '../../context/auth';
 
 const Logout: React.FC = () => {
   const { logout } = useContext(AuthContext);
@@ -18,9 +17,29 @@ const Logout: React.FC = () => {
 const NavBar: React.FC = () => {
   const { isLogged } = useContext(AuthContext);
 
+  const styles = {
+    navBar: {
+      margin: 0,
+      display: 'flex',
+      alignItems: 'center',
+      height: '30px',
+      padding: '20px',
+      backgroundColor: '#111',
+      fontWeight: 400,
+      fontSize: '20px',
+    },
+    section: {
+      color: '#FFF',
+      marginRight: '15px',
+      textDecoration: 'none',
+    },
+  };
+
   return (
-    <div className="NavBar">
-      <Link to="/">TKOJ</Link>
+    <div style={styles.navBar}>
+      <Link to="/" style={styles.section}>
+        TKOJ
+      </Link>
       {isLogged ? <Logout /> : <Link to="/login">Login</Link>}
     </div>
   );

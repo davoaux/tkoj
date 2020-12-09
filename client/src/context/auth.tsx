@@ -1,30 +1,6 @@
 import React, { createContext, useState } from 'react';
-import { UserService } from '../services/api';
-
-interface IAuthContext {
-  isLogged: boolean;
-  setIsLogged: (active: boolean) => void;
-  user: IUser | null;
-  setUser: (user: IUser) => void;
-  register: (userData: IRegisterData) => Promise<boolean>;
-  login: (email: string, password: string) => Promise<IUser | null>;
-  logout: () => void;
-}
-
-interface IRegisterData {
-  name: string;
-  email: string;
-  password: string;
-}
-
-interface IUser {
-  _v: number;
-  _id: string;
-  name: string;
-  email: string;
-  active: boolean;
-  creation: Date;
-}
+import { AuthService } from '../services/authService';
+import { IUser, IAuthContext, IRegisterData } from '../types';
 
 interface ProviderProps {
   children: React.ReactNode;
@@ -40,14 +16,14 @@ const AuthProvider: React.FC<ProviderProps> = ({ children }: ProviderProps) => {
     const storedUser = localStorage.getItem('user');
     return storedUser ? JSON.parse(storedUser) : null;
   });
-  const service = new UserService();
+  const service = new AuthService();
 
   /*
    * TODO useAuth hook
    */
 
-  const register = async (userData: IRegisterData): Promise<boolean> => {
-    const response = await service.register(userData);
+  const register = async (registerData: IRegisterData): Promise<boolean> => {
+    const response = await service.register(registerData);
     if (!response.ok) return false;
 
     return true;
