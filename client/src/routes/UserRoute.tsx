@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Redirect, Route, RouteProps } from 'react-router-dom';
-import { AuthContext } from '../context/auth';
+import { useAuth } from '../context/auth';
 
 const UserRoute: React.FC<RouteProps> = (props: RouteProps) => {
-  const { isLogged } = useContext(AuthContext);
+  const { isLogged } = useAuth();
 
   return isLogged ? <Route {...props} /> : <Redirect to="/login" />;
 };

@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { AuthService } from '../services/authService';
 import { IUser, IAuthContext, IRegisterData } from '../types';
 
@@ -8,19 +8,19 @@ interface ProviderProps {
 
 const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 
+const useAuth = (): IAuthContext => useContext(AuthContext);
+
 const AuthProvider: React.FC<ProviderProps> = ({ children }: ProviderProps) => {
   const [isLogged, setIsLogged] = useState<boolean>(() => {
     return localStorage.getItem('token') ? true : false;
   });
+
   const [user, setUser] = useState<IUser | null>(() => {
     const storedUser = localStorage.getItem('user');
     return storedUser ? JSON.parse(storedUser) : null;
   });
-  const service = new AuthService();
 
-  /*
-   * TODO useAuth hook
-   */
+  const service = new AuthService();
 
   const register = async (registerData: IRegisterData): Promise<boolean> => {
     const response = await service.register(registerData);
@@ -66,4 +66,4 @@ const AuthProvider: React.FC<ProviderProps> = ({ children }: ProviderProps) => {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-export { AuthContext, AuthProvider };
+export { useAuth, AuthProvider };

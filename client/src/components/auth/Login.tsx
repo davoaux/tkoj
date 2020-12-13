@@ -1,16 +1,16 @@
-import React, { FormEvent, useContext, useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { AuthContext } from '../../../context/auth';
+import { useAuth } from '../../context/auth';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const history = useHistory();
-  const { isLogged, login } = useContext(AuthContext);
+  const { isLogged, login } = useAuth();
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (isLogged) history.push('/');
+    if (isLogged) history.push('/dashboard');
 
     const user = await login(email, password);
     if (!user) return console.log('Login error');

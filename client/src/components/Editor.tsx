@@ -3,7 +3,7 @@ import { ApiService } from '../services/apiService';
 import { INote } from '../types';
 
 interface EditorProps {
-  note: INote;
+  note: INote | undefined;
 }
 
 const Editor: React.FC<EditorProps> = (props: EditorProps) => {
@@ -25,7 +25,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
   };
 
   useEffect(() => {
-    setNote(props.note);
+    if (props.note !== undefined) setNote(props.note);
   }, [props.note]);
 
   const handleChange = (

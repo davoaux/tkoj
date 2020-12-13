@@ -1,10 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import React from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import { INote } from '../../types';
-
-interface NotesProps {
-  notes: INote[];
-}
 
 const styles = {
   sideBar: {
@@ -24,23 +20,27 @@ const styles = {
   },
 };
 
-const Notes: React.FC<NotesProps> = (props: NotesProps) => {
-  const [notes, setNotes] = useState<INote[]>([]);
+// interface NotesProps {
+//   notes: INote[];
+// }
 
-  useEffect(() => {
-    setNotes(props.notes);
-  }, [props.notes]);
+// const Notes: React.FC<NotesProps> = (props: NotesProps) => {
+//   const [notes, setNotes] = useState<INote[]>([]);
 
-  return (
-    <>
-      {notes.map((note) => (
-        <a key={note._id} href={'/note/' + note._id} style={styles.tags}>
-          [{note.title}]
-        </a>
-      ))}
-    </>
-  );
-};
+//   useEffect(() => {
+//     setNotes(props.notes);
+//   }, [props.notes]);
+
+//   return (
+//     <>
+//       {notes.map((note) => (
+//         <a key={note._id} href={'/n/' + note._id} style={styles.tags}>
+//           [{note.title}]
+//         </a>
+//       ))}
+//     </>
+//   );
+// };
 
 interface SideBarProps {
   notes: INote[];
@@ -49,13 +49,17 @@ interface SideBarProps {
 const SideBar: React.FC<SideBarProps> = ({ notes }: SideBarProps) => {
   const history = useHistory();
 
-  const handleClick = () => history.push('/note/new');
+  const handleClick = () => history.push('/');
 
   return (
     <div style={styles.sideBar as React.CSSProperties}>
       <button onClick={handleClick}>New note</button>
       <br />
-      <Notes notes={notes} />
+      {notes.map((note) => (
+        <Link to={`/n/${note._id}`} key={note._id} style={styles.tags}>
+          [{note.title}]
+        </Link>
+      ))}
     </div>
   );
 };

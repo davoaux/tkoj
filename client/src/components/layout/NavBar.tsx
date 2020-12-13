@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { AuthContext } from '../../context/auth';
+import { useAuth } from '../../context/auth';
 
 const Logout: React.FC = () => {
-  const { logout } = useContext(AuthContext);
+  const { logout } = useAuth();
   const history = useHistory();
 
   const handleClick = (): void => {
@@ -15,7 +15,7 @@ const Logout: React.FC = () => {
 };
 
 const NavBar: React.FC = () => {
-  const { isLogged } = useContext(AuthContext);
+  const { isLogged } = useAuth();
 
   const styles = {
     navBar: {

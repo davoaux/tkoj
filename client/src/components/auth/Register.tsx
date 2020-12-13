@@ -1,6 +1,6 @@
-import React, { ChangeEvent, FormEvent, useContext, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { AuthContext } from '../../../context/auth';
+import { useAuth } from '../../context/auth';
 
 const Register: React.FC = () => {
   const [userData, setUserData] = useState({
@@ -9,7 +9,7 @@ const Register: React.FC = () => {
     password: '',
   });
   const history = useHistory();
-  const { isLogged, register, login } = useContext(AuthContext);
+  const { isLogged, register, login } = useAuth();
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
