@@ -3,7 +3,8 @@ import { INote, IUser } from '../types';
 interface IApiService {
   getNotes(): Promise<INote[]>;
   createNote(note: INote): Promise<INote | null>;
-  updateNote(note: INote): Promise<boolean>;
+  updateNote(note: INote): Promise<INote | null>;
+  deleteNote(note: INote): Promise<boolean>;
 }
 
 export class ApiService implements IApiService {
@@ -31,6 +32,21 @@ export class ApiService implements IApiService {
 
   async createNote(note: INote): Promise<INote | null> {
     const response = await fetch('/api/notes', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.token,
+      },
+      body: JSON.stringify(note),
+    });
+    if (!response.ok) return null;
+    const data = await response.json();
+
+    return data.note;
+  }
+
+  async updateNote(note: INote): Promise<INote | null> {
+    const response = await fetch('/api/notes', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -44,9 +60,9 @@ export class ApiService implements IApiService {
     return data.note;
   }
 
-  async updateNote(note: INote): Promise<boolean> {
-    const response = await fetch('/api/notes', {
-      method: 'PUT',
+  async deleteNote(note: INote): Promise<boolean> {
+    const response = await fetch(`/api/notes/${note._id}`, {
+      method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + this.token,

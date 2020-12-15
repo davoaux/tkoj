@@ -20,28 +20,6 @@ const styles = {
   },
 };
 
-// interface NotesProps {
-//   notes: INote[];
-// }
-
-// const Notes: React.FC<NotesProps> = (props: NotesProps) => {
-//   const [notes, setNotes] = useState<INote[]>([]);
-
-//   useEffect(() => {
-//     setNotes(props.notes);
-//   }, [props.notes]);
-
-//   return (
-//     <>
-//       {notes.map((note) => (
-//         <a key={note._id} href={'/n/' + note._id} style={styles.tags}>
-//           [{note.title}]
-//         </a>
-//       ))}
-//     </>
-//   );
-// };
-
 interface SideBarProps {
   notes: INote[];
 }

@@ -6,7 +6,7 @@ const Logout: React.FC = () => {
   const { logout } = useAuth();
   const history = useHistory();
 
-  const handleClick = (): void => {
+  const handleClick = () => {
     logout();
     history.push('/');
   };
@@ -15,8 +15,6 @@ const Logout: React.FC = () => {
 };
 
 const NavBar: React.FC = () => {
-  const { isLogged } = useAuth();
-
   const styles = {
     navBar: {
       margin: 0,
@@ -40,7 +38,7 @@ const NavBar: React.FC = () => {
       <Link to="/" style={styles.section}>
         TKOJ
       </Link>
-      {isLogged ? <Logout /> : <Link to="/login">Login</Link>}
+      <Logout />
     </div>
   );
 };

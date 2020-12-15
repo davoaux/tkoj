@@ -1,14 +1,17 @@
 import React, { FormEvent, useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useAuth } from '../context/auth';
 import { ApiService } from '../services/apiService';
 import { INote } from '../types';
 
 interface EditorProps {
-  note: INote | undefined;
+  note?: INote | undefined;
 }
 
 const Editor: React.FC<EditorProps> = (props: EditorProps) => {
   const [note, setNote] = useState<INote>({} as INote);
-  const api = new ApiService();
+  const history = useHistory();
+  const { user } = useAuth();
 
   const styles = {
     editor: {
@@ -26,6 +29,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
 
   useEffect(() => {
     if (props.note !== undefined) setNote(props.note);
+    else setNote({ userId: user?._id } as INote);
   }, [props.note]);
 
   const handleChange = (
@@ -36,14 +40,30 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (note.title == '' || note.content == '')
-      return console.log('Missing fields');
+    if (note.title == '') return console.log('TODO title required');
 
-    // TODO if editing existing note
-    const response = await api.updateNote(note);
-    if (!response) return console.log('update failed');
+    const api = new ApiService();
+    const response = !note._id
+      ? await api.createNote(note)
+      : await api.updateNote(note);
 
-    return console.log('update went ok');
+    if (!response) console.log('update failed');
+    else console.log('note saved');
+
+    // TODO Once created a new note, redirect to the route of the new note
+    // ie /n/:id
+
+    window.location.reload();
+  }
+
+  async function handleDeleteNote() {
+    // TODO ask for confirmation
+
+    const deleted = await new ApiService().deleteNote(note);
+    if (!deleted) return console.log('Error deleting note');
+
+    console.log('Note deleted');
+    history.push('/');
   }
 
   return (
@@ -72,6 +92,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
         />
         <input name="tags" type="text" value="tags here..." readOnly />
         <input type="submit" value="Save note" />
+        <input type="button" value="Delete note" onClick={handleDeleteNote} />
       </form>
     </>
   );

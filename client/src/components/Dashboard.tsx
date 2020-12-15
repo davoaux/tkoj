@@ -9,10 +9,9 @@ import SideBar from './layout/SideBar';
 
 const Dashboard: React.FC = () => {
   const [notes, setNotes] = useState<INote[]>([]);
-  const api = new ApiService();
 
   async function loadNotes() {
-    const notes = await api.getNotes();
+    const notes = await new ApiService().getNotes();
     setNotes(notes);
   }
 
@@ -46,7 +45,7 @@ const Dashboard: React.FC = () => {
           path="/*"
           render={() => (
             <div style={styles}>
-              <Editor note={undefined} />
+              <Editor />
             </div>
           )}
         />

@@ -30,17 +30,19 @@ module.exports = {
   },
 
   updateNote: async (req, res) => {
-    return Note.updateOne({ _id: req.body._id }, req.body, (err) => {
+    const query = { _id: req.body._id };
+    const options = { new: true };
+
+    return Note.findOneAndUpdate(query, req.body, options, (err, note) => {
       if (err) return res.status(500).json(err);
-      return res.json({ msg: 'Note updated' });
+      return res.json({ msg: 'Note updated', note });
     });
   },
 
   deleteNote: (req, res) => {
-    Note.findByIdAndDelete(req.params.id, (err, note) => {
+    return Note.deleteOne({ _id: req.params.id }, (err) => {
       if (err) return res.status(500).json(err);
-      if (!note) return res.status(200).json({ msg: "Note doesn't exist" });
-      return res.status(200).json({ msg: 'Note deleted', note });
+      return res.status(200).json({ msg: 'Note deleted' });
     });
   },
 };
