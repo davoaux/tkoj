@@ -1,11 +1,14 @@
 import React, { FormEvent, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useAuth } from '../context/auth';
-import { ApiService } from '../services/apiService';
-import { INote } from '../types';
+import { useAuth } from '../../context/auth';
+import { ApiService } from '../../services/apiService';
+import { INote } from '../../types';
+import './Editor.css';
 
 interface EditorProps {
   note?: INote | undefined;
+  onContentChange: (content: string) => void;
+  onTitleChange: (title: string) => void;
 }
 
 const Editor: React.FC<EditorProps> = (props: EditorProps) => {
@@ -13,30 +16,16 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
   const history = useHistory();
   const { user } = useAuth();
 
-  const styles = {
-    editor: {
-      display: 'inline-grid',
-    },
-    textarea: {
-      border: '2px solid #000',
-      borderRadius: 0,
-      resize: 'none',
-    } as React.CSSProperties,
-    title: {
-      fontSize: '2.5rem',
-    },
-  };
-
   useEffect(() => {
-    if (props.note !== undefined) setNote(props.note);
+    if (props.note) setNote(props.note);
     else setNote({ userId: user?._id } as INote);
   }, [props.note]);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setNote({ ...note, [e.target.name]: e.target.value });
-  };
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    props.onTitleChange(e.target.value);
+
+  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+    props.onContentChange(e.target.value);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -68,31 +57,24 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
 
   return (
     <>
-      <form style={styles.editor} onSubmit={handleSubmit}>
-        <input
-          name="title"
-          type="text"
-          value={note?.title || ''}
-          onChange={handleChange}
-          style={styles.title}
-        />
+      <form className="editor" onSubmit={handleSubmit}>
+        <div className="editor-header">
+          <input
+            className="title"
+            name="title"
+            type="text"
+            value={note?.title || ''}
+            onChange={handleTitleChange}
+          />
+          <input type="submit" value="Save note" />
+          <input type="button" value="Delete note" onClick={handleDeleteNote} />
+        </div>
         <textarea
+          className="content"
           name="content"
-          value={note?.content || ''}
-          cols={80}
-          rows={20}
-          onChange={handleChange}
-          style={styles.textarea}
+          value={props.note?.content || ''}
+          onChange={handleContentChange}
         />
-        <input
-          name="category"
-          type="text"
-          value={note?.category || ''}
-          readOnly
-        />
-        <input name="tags" type="text" value="tags here..." readOnly />
-        <input type="submit" value="Save note" />
-        <input type="button" value="Delete note" onClick={handleDeleteNote} />
       </form>
     </>
   );

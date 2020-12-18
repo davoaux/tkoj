@@ -1,0 +1,13 @@
+.navBar {
+  grid-area: H;
+  height: 50px;
+  background-color: #1e1e1e;
+  font-weight: 400;
+  font-size: 20px;
+}
+
+.section {
+  color: #fff;
+  text-decoration: none;
+  margin-right: 15px;
+}

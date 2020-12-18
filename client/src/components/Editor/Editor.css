@@ -1,0 +1,25 @@
+.editor {
+  display: flex;
+  flex-direction: column;
+  width: 700px; /*temp*/
+}
+
+.editor-header {
+  display: flex;
+  flex-direction: row;
+}
+
+.editor input {
+  width: -webkit-fill-available;
+}
+
+input.title {
+  font-size: 2.5rem;
+}
+
+textarea.content {
+  height: 700px;
+  border: 2px solid #000;
+  border-radius: 0;
+  resize: none;
+}

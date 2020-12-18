@@ -1,0 +1,7 @@
+.main {
+  display: grid;
+  grid:
+    'H H'
+    'S D';
+  grid-template-columns: 160px 1fr;
+}
