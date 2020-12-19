@@ -1,7 +1,4 @@
-import React, { FormEvent, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { useAuth } from '../../context/auth';
-import { ApiService } from '../../services/apiService';
+import React, { FormEvent } from 'react';
 import { INote } from '../../types';
 import './Editor.css';
 
@@ -9,51 +6,28 @@ interface EditorProps {
   note?: INote | undefined;
   onContentChange: (content: string) => void;
   onTitleChange: (title: string) => void;
+  onSubmit: (note: INote) => Promise<void>;
+  onDeleteNote: (note: INote) => Promise<void>;
 }
 
 const Editor: React.FC<EditorProps> = (props: EditorProps) => {
-  const [note, setNote] = useState<INote>({} as INote);
-  const history = useHistory();
-  const { user } = useAuth();
-
-  useEffect(() => {
-    if (props.note) setNote(props.note);
-    else setNote({ userId: user?._id } as INote);
-  }, [props.note]);
-
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     props.onTitleChange(e.target.value);
 
   const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
     props.onContentChange(e.target.value);
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (note.title == '') return console.log('TODO title required');
+    if (!props.note?.title || props.note.title == '')
+      return console.log('TODO title required');
 
-    const api = new ApiService();
-    const response = !note._id
-      ? await api.createNote(note)
-      : await api.updateNote(note);
+    props.onSubmit(props.note);
+  };
 
-    if (!response) console.log('update failed');
-    else console.log('note saved');
-
-    // TODO Once created a new note, redirect to the route of the new note
-    // ie /n/:id
-
-    window.location.reload();
-  }
-
-  async function handleDeleteNote() {
-    // TODO ask for confirmation
-
-    const deleted = await new ApiService().deleteNote(note);
-    if (!deleted) return console.log('Error deleting note');
-
-    console.log('Note deleted');
-    history.push('/');
-  }
+  const handleDeleteNote = () => {
+    if (props.note !== undefined) props.onDeleteNote(props.note);
+  };
 
   return (
     <>
@@ -63,7 +37,7 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
             className="title"
             name="title"
             type="text"
-            value={note?.title || ''}
+            value={props.note?.title || ''}
             onChange={handleTitleChange}
           />
           <input type="submit" value="Save note" />
