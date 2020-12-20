@@ -1,17 +1,21 @@
 import React from 'react';
+import marked from 'marked';
 
 interface PreviewProps {
   content: string;
 }
 
-const Preview: React.FC<PreviewProps> = (props: PreviewProps) => {
+const Preview: React.FC<PreviewProps> = ({ content }: PreviewProps) => {
+  const value =
+    typeof content === 'undefined' || content === null
+      ? { __html: '' }
+      : { __html: marked(content) };
+
   return (
-    <textarea
+    <div
       className="content"
-      name="content"
-      value={props.content || ''}
       style={{ height: '751px', width: '600px' }}
-      readOnly
+      dangerouslySetInnerHTML={value}
     />
   );
 };
