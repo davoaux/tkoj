@@ -1,5 +1,7 @@
 import React from 'react';
 import marked from 'marked';
+import DOMPurify from 'dompurify';
+import './Preview.css';
 
 interface PreviewProps {
   content: string;
@@ -9,15 +11,9 @@ const Preview: React.FC<PreviewProps> = ({ content }: PreviewProps) => {
   const value =
     typeof content === 'undefined' || content === null
       ? { __html: '' }
-      : { __html: marked(content) };
+      : { __html: DOMPurify.sanitize(marked(content)) };
 
-  return (
-    <div
-      className="content"
-      style={{ height: '751px', width: '600px' }}
-      dangerouslySetInnerHTML={value}
-    />
-  );
+  return <div className="preview" dangerouslySetInnerHTML={value} />;
 };
 
 export default Preview;

@@ -40,8 +40,13 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
             value={props.note?.title || ''}
             onChange={handleTitleChange}
           />
-          <input type="submit" value="Save note" />
-          <input type="button" value="Delete note" onClick={handleDeleteNote} />
+          <input className="btn" type="submit" value="Save note" />
+          <input
+            className="btn"
+            type="button"
+            value="Delete note"
+            onClick={handleDeleteNote}
+          />
         </div>
         <textarea
           className="content"

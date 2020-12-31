@@ -1,6 +1,6 @@
 import React, { FormEvent, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useAuth } from '../../context/auth';
+import { useAuth } from '../context/auth';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');

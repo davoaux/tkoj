@@ -4,8 +4,8 @@ import UserRoute from '../../routes/UserRoute';
 import { ApiService } from '../../services/apiService';
 import { INote } from '../../types';
 import Dashboard from '../Dashboard/Dashboard';
-import NavBar from '../layout/NavBar/NavBar';
-import SideBar from '../layout/SideBar/SideBar';
+import NavBar from '../NavBar/NavBar';
+import SideBar from '../SideBar/SideBar';
 import './Application.css';
 
 const Application: React.FC = () => {

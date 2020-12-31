@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { useAuth } from '../../../context/auth';
+import { useAuth } from '../../context/auth';
 import './NavBar.css';
 
 const Logout: React.FC = () => {
@@ -12,16 +12,29 @@ const Logout: React.FC = () => {
     history.push('/');
   };
 
-  return <button onClick={handleClick}>Logout</button>;
+  return (
+    <button className="btn" onClick={handleClick}>
+      Logout
+    </button>
+  );
 };
 
 const NavBar: React.FC = () => {
   return (
     <div className="navBar">
-      <Link to="/" className="section">
-        TKOJ
-      </Link>
-      <Logout />
+      <div>
+        <Link to="/">TKOJ</Link>
+      </div>
+      <div>
+        <input
+          className="input-transparent"
+          type="text"
+          placeholder="todo search bar"
+        />
+      </div>
+      <div>
+        <Logout />
+      </div>
     </div>
   );
 };

@@ -1,3 +1,32 @@
 .dashboard {
-  display: flex;
+  /* display: flex; */
+  /* justify-content: center; */
+  display: grid;
+  grid-auto-flow: column;
+}
+
+.btn {
+  border-radius: 3px;
+  font-family: Courier New;
+  color: #000000;
+  font-size: 0.9rem;
+  background: #ffffff;
+  padding: 0.25rem 0.5rem;
+  border: solid #8a8a8a 1px;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: var(--white01);
+  text-decoration: none;
+}
+
+.input-transparent {
+  border: none;
+  background-color: transparent;
+  font-size: 0.85rem;
+}
+
+.input-transparent:focus {
+  outline: none;
 }

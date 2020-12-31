@@ -29,9 +29,7 @@ const Dashboard: React.FC<DashboardProps> = (props: DashboardProps) => {
 
   const handleSubmit = async (note: INote): Promise<void> => {
     const api = new ApiService();
-    const response = !note._id
-      ? await api.createNote(note)
-      : await api.updateNote(note);
+    const response = await api.updateNote(note);
 
     if (!response) console.log('save failed');
     else console.log('note saved');

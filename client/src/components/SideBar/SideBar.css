@@ -1,0 +1,45 @@
+.sideBar {
+  grid-area: S;
+  min-height: 100vh;
+  border-right: solid 1px rgba(17, 17, 17, 0.1);
+}
+
+.sidebar-menu {
+  display: flex;
+  justify-content: center;
+  border-bottom: solid 1px rgba(17, 17, 17, 0.1);
+  padding: 10px 0px;
+}
+
+.input-new-note {
+  max-width: 130px;
+}
+
+.submit-new-note {
+  background-color: transparent;
+  border: none;
+}
+
+.submit-new-note:focus {
+  outline: none;
+}
+
+.tags {
+  display: flex;
+  flex-direction: column;
+}
+
+.tagItem {
+  padding: 5px;
+  text-decoration: none;
+  color: black;
+}
+
+.tagItem:hover {
+  background-color: var(--white01);
+}
+
+.activeTag {
+  background-color: var(--white01);
+  border-right: solid var(--blue) 3px;
+}

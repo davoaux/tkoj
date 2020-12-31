@@ -3,5 +3,5 @@
   grid:
     'H H'
     'S D';
-  grid-template-columns: 160px 1fr;
+  grid-template-columns: 180px 1fr;
 }

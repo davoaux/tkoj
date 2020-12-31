@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useAuth } from '../../context/auth';
+import { useAuth } from '../context/auth';
 
 const Register: React.FC = () => {
   const [userData, setUserData] = useState({
