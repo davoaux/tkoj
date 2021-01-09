@@ -20,5 +20,7 @@ code {
 
 :root {
   --blue: #00bebe;
-  --white01: #fafafa;
+  --white01: #f7f7f7;
+  --icon-fg: #313131;
+  --border: rgba(17, 17, 17, 0.1);
 }

@@ -1,13 +1,13 @@
 .sideBar {
   grid-area: S;
   min-height: 100vh;
-  border-right: solid 1px rgba(17, 17, 17, 0.1);
+  border-right: solid 1px var(--border);
 }
 
 .sidebar-menu {
   display: flex;
   justify-content: center;
-  border-bottom: solid 1px rgba(17, 17, 17, 0.1);
+  border-bottom: solid 1px var(--border);
   padding: 10px 0px;
 }
 
@@ -18,6 +18,9 @@
 .submit-new-note {
   background-color: transparent;
   border: none;
+  font-size: 1.2rem;
+  color: var(--icon-fg);
+  float: right;
 }
 
 .submit-new-note:focus {
@@ -27,6 +30,8 @@
 .tags {
   display: flex;
   flex-direction: column;
+  margin-top: 0.25rem;
+  font-size: 0.95rem;
 }
 
 .tagItem {

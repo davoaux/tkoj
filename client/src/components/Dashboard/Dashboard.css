@@ -1,15 +1,13 @@
 .dashboard {
-  /* display: flex; */
-  /* justify-content: center; */
   display: grid;
-  grid-auto-flow: column;
+  grid: 'E P' 'F F';
+  background-color: white;
 }
 
 .btn {
-  border-radius: 3px;
   font-family: Courier New;
-  color: #000000;
-  font-size: 0.9rem;
+  color: black;
+  font-size: 0.8rem;
   background: #ffffff;
   padding: 0.25rem 0.5rem;
   border: solid #8a8a8a 1px;
@@ -17,7 +15,8 @@
 }
 
 .btn:hover {
-  background: var(--white01);
+  border-color: var(--blue);
+  color: var(--blue);
   text-decoration: none;
 }
 

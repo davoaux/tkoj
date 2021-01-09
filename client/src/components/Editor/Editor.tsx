@@ -40,11 +40,11 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
             value={props.note?.title || ''}
             onChange={handleTitleChange}
           />
-          <input className="btn" type="submit" value="Save note" />
+          <input className="material-icons icon" type="submit" value="save" />
           <input
-            className="btn"
+            className="material-icons icon"
             type="button"
-            value="Delete note"
+            value="delete"
             onClick={handleDeleteNote}
           />
         </div>

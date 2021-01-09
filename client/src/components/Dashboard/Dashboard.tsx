@@ -4,11 +4,12 @@ import { useAuth } from '../../context/auth';
 import { ApiService } from '../../services/apiService';
 import { INote } from '../../types';
 import Editor from '../Editor/Editor';
+import Footer from '../Footer/Footer';
 import Preview from '../Preview/Preview';
 import './Dashboard.css';
 
 interface DashboardProps {
-  note?: INote | undefined;
+  note?: INote;
 }
 
 const Dashboard: React.FC<DashboardProps> = (props: DashboardProps) => {
@@ -59,6 +60,7 @@ const Dashboard: React.FC<DashboardProps> = (props: DashboardProps) => {
         onDeleteNote={handleDeleteNote}
       />
       <Preview content={note.content} />
+      <Footer />
     </div>
   );
 };

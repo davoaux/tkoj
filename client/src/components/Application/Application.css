@@ -1,7 +1,20 @@
 .main {
   display: grid;
-  grid:
-    'H H'
-    'S D';
+  grid: 'S D';
   grid-template-columns: 180px 1fr;
+}
+
+.icon {
+  background-color: transparent;
+  border: none;
+  font-size: 1.2rem;
+  color: var(--icon-fg);
+}
+
+.icon:hover {
+  color: var(--blue);
+}
+
+.icon:focus {
+  outline: none;
 }

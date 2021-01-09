@@ -4,7 +4,7 @@ import Application from './components/Application/Application';
 import Login from './components/Login';
 import Register from './components/Register';
 import { AuthProvider } from './context/auth';
-import UserRoute from './routes/UserRoute';
+import UserRoute from './utils/UserRoute';
 
 const App: React.FC = () => {
   return (

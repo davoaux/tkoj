@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Switch } from 'react-router-dom';
+import NotesContext from '../../context/notes';
 import UserRoute from '../../routes/UserRoute';
 import { ApiService } from '../../services/apiService';
 import { INote } from '../../types';
 import Dashboard from '../Dashboard/Dashboard';
-import NavBar from '../NavBar/NavBar';
 import SideBar from '../SideBar/SideBar';
 import './Application.css';
 
@@ -21,22 +21,23 @@ const Application: React.FC = () => {
   }, []);
 
   return (
-    <div className="main">
-      <NavBar />
-      <SideBar notes={notes} />
-      <Switch>
-        <UserRoute
-          exact
-          path="/n/:id"
-          render={({ match }) => (
-            <Dashboard
-              note={notes.find((note) => note._id === match.params.id)}
-            />
-          )}
-        />
-        <UserRoute exact path="/*" render={() => <Dashboard />} />
-      </Switch>
-    </div>
+    <NotesContext.Provider value={notes}>
+      <div className="main">
+        <SideBar />
+        <Switch>
+          <UserRoute
+            exact
+            path="/n/:id"
+            render={({ match }) => (
+              <Dashboard
+                note={notes?.find((note) => note._id === match.params.id)}
+              />
+            )}
+          />
+          <UserRoute exact path="/*" render={() => <Dashboard />} />
+        </Switch>
+      </div>
+    </NotesContext.Provider>
   );
 };
 
