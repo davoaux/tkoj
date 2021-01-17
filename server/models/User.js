@@ -35,4 +35,9 @@ userSchema.pre('save', async function onSave(next) {
   next();
 });
 
+userSchema.post('deleteOne', async function onRemove() {
+  // TODO remove each not from this user
+  console.log('deleteOne hook');
+});
+
 module.exports = mongoose.model('User', userSchema);

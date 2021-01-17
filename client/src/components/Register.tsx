@@ -1,69 +1,67 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Alert, Button, Form, Input } from 'antd';
 import { useAuth } from '../context/auth';
+import { useHistory } from 'react-router-dom';
+import { IRegisterFields } from '../types';
 
 const Register: React.FC = () => {
-  const [userData, setUserData] = useState({
-    name: '',
-    email: '',
-    password: '',
-  });
-  const history = useHistory();
   const { isLogged, register, login } = useAuth();
+  const history = useHistory();
+  const [form] = Form.useForm();
+  const [error, setError] = useState({ status: false, message: '' });
 
-  function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    const value = e.target.value;
-    setUserData({
-      ...userData,
-      [e.target.name]: value,
-    });
-  }
+  const handleFinish = async (fields: IRegisterFields) => {
+    if (isLogged) history.push('/dashboard');
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    if (isLogged) history.push('/');
+    // Register the user
+    const response = await register(fields);
+    /* if (!response) return console.log('Sign up error'); */
+    if (!response) return setError({ status: true, message: 'Sign up error' });
 
-    const response = await register(userData);
-    if (!response) return console.log('Sign up error');
-
-    const user = await login(userData.email, userData.password);
-    if (!user) return console.log('Login error');
+    // Login the user
+    await login(fields.email, fields.password);
     history.push('/');
-  }
+  };
 
   return (
-    <div>
-      <h1>Sign Up</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Name
-          <input
-            type="text"
-            name="name"
-            value={userData.name}
-            onChange={handleChange}
+    <div className="form-container">
+      <h1>Sign up</h1>
+      {error.status && (
+        <Alert
+          type="error"
+          message={error.message}
+          showIcon
+          style={{ width: 'inherit', marginBottom: '15px' }}
+        />
+      )}
+      <Form form={form} name="register" onFinish={handleFinish}>
+        <Form.Item name="name" rules={[{ required: true }]}>
+          <Input
+            prefix={
+              <span className="prefix-icon material-icons">account_box</span>
+            }
+            placeholder="Name"
           />
-        </label>
-        <label>
-          Email
-          <input
-            type="email"
-            name="email"
-            value={userData.email}
-            onChange={handleChange}
+        </Form.Item>
+        <Form.Item name="email" rules={[{ required: true }, { type: 'email' }]}>
+          <Input
+            prefix={<span className="prefix-icon material-icons">email</span>}
+            placeholder="Email"
           />
-        </label>
-        <label>
-          Password
-          <input
+        </Form.Item>
+        <Form.Item name="password" rules={[{ required: true }]}>
+          <Input
             type="password"
-            name="password"
-            value={userData.password}
-            onChange={handleChange}
+            prefix={<span className="prefix-icon material-icons">lock</span>}
+            placeholder="Password"
           />
-        </label>
-        <input type="submit" value="Create account" />
-      </form>
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Create account
+          </Button>
+        </Form.Item>
+      </Form>
     </div>
   );
 };

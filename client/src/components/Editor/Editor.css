@@ -6,7 +6,7 @@
 .editor-header {
   display: flex;
   flex-direction: row;
-  min-height: 41px;
+  min-height: 44px;
   border-bottom: solid var(--border) 1px;
 }
 

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Switch } from 'react-router-dom';
 import NotesContext from '../../context/notes';
-import UserRoute from '../../routes/UserRoute';
 import { ApiService } from '../../services/apiService';
 import { INote } from '../../types';
+import UserRoute from '../../utils/UserRoute';
 import Dashboard from '../Dashboard/Dashboard';
 import SideBar from '../SideBar/SideBar';
 import './Application.css';

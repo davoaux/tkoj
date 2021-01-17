@@ -1,4 +1,4 @@
-import { IRegisterData } from '../types';
+import { IRegisterFields } from '../types';
 
 interface IAuthService {
   register: Function;
@@ -6,7 +6,7 @@ interface IAuthService {
 }
 
 export class AuthService implements IAuthService {
-  async register(registerData: IRegisterData): Promise<Response> {
+  async register(registerData: IRegisterFields): Promise<Response> {
     const { name, email, password } = registerData;
     const response = await fetch('/api/register', {
       method: 'POST',

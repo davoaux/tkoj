@@ -17,7 +17,7 @@ module.exports = {
         user: newUser,
       });
     } catch (err) {
-      return res.status(500).json({ message: 'Register failed', error: err });
+      return res.status(500).json({ message: 'Sign up failed', error: err });
     }
   },
 
@@ -67,6 +67,16 @@ module.exports = {
     }
   },
 
+  updateUser: async (req, res) => {
+    const query = { _id: req.body._id };
+    try {
+      const user = await User.findOneAndUpdate(query, req.body, { new: true });
+      return res.status(200).json(user);
+    } catch (err) {
+      return res.status(500).json({ error: err });
+    }
+  },
+
   getNotes: async (req, res) => {
     const { id } = req.params;
     try {
@@ -87,13 +97,10 @@ module.exports = {
     }
   },
 
-  deactivateUser: async (req, res) => {
+  deleteUser: async (req, res) => {
     const { id } = req.params;
-    try {
-      const user = await User.findByIdAndUpdate(id, { active: false });
-      return res.status(200).json({ message: 'User deactivated', user });
-    } catch (err) {
-      return res.status(500).json({ error: err });
-    }
+    const user = await User.deleteOne({ _id: id });
+    if (!user) return res.status(401).json({ message: 'User not found' });
+    return res.status(200).json({ message: 'User deleted', user });
   },
 };

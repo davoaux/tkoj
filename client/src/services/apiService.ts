@@ -18,7 +18,7 @@ export class ApiService implements IApiService {
   }
 
   async getNotes(): Promise<INote[]> {
-    const response = await fetch(`/api/user/${this.user?._id}/notes`, {
+    const response = await fetch(`/api/users/${this.user?._id}/notes`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -60,6 +60,22 @@ export class ApiService implements IApiService {
     return data.note;
   }
 
+  async updateUser(user: IUser): Promise<IUser | null> {
+    const response = await fetch(`/api/users/${user._id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.token,
+      },
+      body: JSON.stringify(user),
+    });
+    console.log(response);
+    if (!response.ok) return null;
+    const data = await response.json();
+
+    return data;
+  }
+
   async deleteNote(note: INote): Promise<boolean> {
     const response = await fetch(`/api/notes/${note._id}`, {
       method: 'DELETE',
@@ -68,6 +84,19 @@ export class ApiService implements IApiService {
         Authorization: 'Bearer ' + this.token,
       },
       body: JSON.stringify(note),
+    });
+    if (!response.ok) return false;
+
+    return true;
+  }
+
+  async deleteUser(id: string): Promise<boolean> {
+    const response = await fetch(`/api/users/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.token,
+      },
     });
     if (!response.ok) return false;
 

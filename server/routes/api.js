@@ -8,9 +8,10 @@ router.post('/login', userController.login);
 
 router.get('/users', auth, userController.getAllUsers);
 router.get('/users/:id', auth, userController.getUserById);
-router.get('/user/:id/notes', auth, userController.getNotes);
+router.put('/users/:id', auth, userController.updateUser);
+router.get('/users/:id/notes', auth, userController.getNotes);
 router.get('/users/email/:email', auth, userController.getUserByEmail);
-router.put('/users/deactivate/:id', auth, userController.deactivateUser);
+router.delete('/users/:id', auth, userController.deleteUser);
 
 router.get('/notes', auth, noteController.getAllNotes);
 router.get('/notes/:id', auth, noteController.getNoteById);

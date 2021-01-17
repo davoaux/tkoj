@@ -1,6 +1,6 @@
 .dashboard {
   display: grid;
-  grid: 'E P' 'F F';
+  grid: 'E P';
   background-color: white;
 }
 

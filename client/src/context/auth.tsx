@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 import { AuthService } from '../services/authService';
-import { IUser, IAuthContext, IRegisterData } from '../types';
+import { IUser, IAuthContext, IRegisterFields } from '../types';
 
 interface ProviderProps {
   children: React.ReactNode;
@@ -22,17 +22,14 @@ const AuthProvider: React.FC<ProviderProps> = ({ children }: ProviderProps) => {
 
   const service = new AuthService();
 
-  const register = async (registerData: IRegisterData): Promise<boolean> => {
-    const response = await service.register(registerData);
+  async function register(registerFields: IRegisterFields): Promise<boolean> {
+    const response = await service.register(registerFields);
     if (!response.ok) return false;
 
     return true;
-  };
+  }
 
-  const login = async (
-    email: string,
-    password: string
-  ): Promise<IUser | null> => {
+  async function login(email: string, password: string): Promise<IUser | null> {
     const response = await service.login(email, password);
     if (!response.ok) return null;
     const data = await response.json();
@@ -44,14 +41,14 @@ const AuthProvider: React.FC<ProviderProps> = ({ children }: ProviderProps) => {
     setUser(data.user);
 
     return data.user;
-  };
+  }
 
-  const logout = (): void => {
+  function logout(): void {
     localStorage.clear();
 
     setIsLogged(false);
     setUser(null);
-  };
+  }
 
   const value = {
     isLogged,

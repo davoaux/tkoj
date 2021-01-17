@@ -4,7 +4,7 @@ import { useAuth } from '../../context/auth';
 import { ApiService } from '../../services/apiService';
 import { INote } from '../../types';
 import Editor from '../Editor/Editor';
-import Footer from '../Footer/Footer';
+import Footer from '../Footer';
 import Preview from '../Preview/Preview';
 import './Dashboard.css';
 

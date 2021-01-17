@@ -1,10 +1,15 @@
-interface IRegisterData {
+export interface IRegisterFields {
   name: string;
   email: string;
   password: string;
 }
 
-interface IAuthContext {
+export interface ILoginFields {
+  email: string;
+  password: string;
+}
+
+export interface IAuthContext {
   isLogged: boolean;
   setIsLogged: (active: boolean) => void;
   user: IUser | null;
