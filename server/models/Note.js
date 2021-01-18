@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
-const noteSchema = new Schema({
+const schema = new Schema({
   title: {
     type: String,
     required: true,
@@ -24,12 +24,13 @@ const noteSchema = new Schema({
   userId: {
     type: Schema.Types.ObjectId,
     required: true,
+    ref: 'User',
   },
 });
 
-noteSchema.pre('save', async function onSave(next) {
+schema.pre('save', async function (next) {
   if (this.category.length === 0) this.category.push('general');
   next();
 });
 
-module.exports = mongoose.model('Note', noteSchema);
+module.exports = mongoose.model('Note', schema);

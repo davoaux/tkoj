@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const Note = require('./Note');
 
 const { Schema } = mongoose;
 
-const userSchema = new Schema({
+const schema = new Schema({
   name: {
     type: String,
     required: true,
@@ -26,7 +27,8 @@ const userSchema = new Schema({
   },
 });
 
-userSchema.pre('save', async function onSave(next) {
+// Encrypt password when creating a new user or updating it's password
+schema.pre('save', async function (next) {
   if (this.isModified('password')) {
     const salt = await bcrypt.genSalt(10);
     const encrypted = await bcrypt.hash(this.password, salt);
@@ -35,9 +37,10 @@ userSchema.pre('save', async function onSave(next) {
   next();
 });
 
-userSchema.post('deleteOne', async function onRemove() {
-  // TODO remove each not from this user
-  console.log('deleteOne hook');
+// When deleting a user, delete each of its notes
+schema.pre('deleteOne', { document: false, query: true }, async function () {
+  const doc = await this.model.findOne(this.getFilter());
+  await Note.deleteMany({ userId: doc._id });
 });
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('User', schema);
