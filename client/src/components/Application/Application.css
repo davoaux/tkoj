@@ -1,7 +1,7 @@
 .main {
   display: grid;
   grid: 'S D';
-  grid-template-columns: 180px 1fr;
+  grid-template-columns: var(--sidebar-size) 1fr;
 }
 
 .icon {

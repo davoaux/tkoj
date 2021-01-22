@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { Col, Row } from 'antd';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../../context/auth';
 import { ApiService } from '../../services/apiService';
 import { INote } from '../../types';
 import Editor from '../Editor/Editor';
-import Footer from '../Footer';
 import Preview from '../Preview/Preview';
-import './Dashboard.css';
+// import './Dashboard.css';
 
 interface DashboardProps {
   note?: INote;
@@ -51,17 +51,21 @@ const Dashboard: React.FC<DashboardProps> = (props: DashboardProps) => {
   };
 
   return (
-    <div className="dashboard">
-      <Editor
-        note={note}
-        onTitleChange={handleTitleChange}
-        onContentChange={handleContentChange}
-        onSubmit={handleSubmit}
-        onDeleteNote={handleDeleteNote}
-      />
-      <Preview content={note.content} />
-      <Footer />
-    </div>
+    // <div className="dashboard">
+    <Row style={{ height: '100%' }}>
+      <Col span={12}>
+        <Editor
+          note={note}
+          onTitleChange={handleTitleChange}
+          onContentChange={handleContentChange}
+          onSubmit={handleSubmit}
+          onDeleteNote={handleDeleteNote}
+        />
+      </Col>
+      <Col span={12} style={{ backgroundColor: 'white' }}>
+        <Preview input={'## ' + note.title + '\n' + note.content} />
+      </Col>
+    </Row>
   );
 };
 

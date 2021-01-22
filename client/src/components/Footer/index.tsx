@@ -1,18 +1,14 @@
 import React from 'react';
-import Search from './Search';
-import './Footer.css';
+import NoteSearch from './NoteSearch';
 import SettingsMenu from './SettingsMenu';
+import './Footer.css';
 
 const Footer: React.FC = () => {
   return (
-    <div className="footer">
-      <div className="search">
-        <Search />
-      </div>
-      <div>
-        <SettingsMenu />
-      </div>
-    </div>
+    <>
+      <NoteSearch />
+      <SettingsMenu />
+    </>
   );
 };
 

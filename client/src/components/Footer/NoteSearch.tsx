@@ -1,9 +1,10 @@
-import { AutoComplete } from 'antd';
 import React, { FormEvent, useContext, useState } from 'react';
+import { AutoComplete } from 'antd';
 import { useHistory } from 'react-router-dom';
 import NotesContext from '../../context/notes';
+import { SearchOutlined } from '@ant-design/icons';
 
-const Search: React.FC = () => {
+const NoteSearch: React.FC = () => {
   const [search, setSearch] = useState('');
   const notes = useContext(NotesContext);
   const history = useHistory();
@@ -27,28 +28,23 @@ const Search: React.FC = () => {
   });
 
   return (
-    <form onSubmit={handleSearchSubmit}>
+    <div style={{ display: 'inline-flex', alignItems: 'center' }}>
       <AutoComplete
         style={{ width: 300, order: 2 }}
         placeholder="Search note..."
+        bordered={false}
         value={search}
         options={options}
         filterOption={true}
         onChange={(value) => setSearch(value)}
         onSelect={handleSearchSelect}
       />
-      <input
-        className="material-icons icon"
-        style={{
-          fontWeight: 'bold',
-          fontSize: '1.4rem',
-          order: 1,
-        }}
-        type="button"
-        value="search"
+      <SearchOutlined
+        style={{ fontSize: '1.4rem' }}
+        onClick={handleSearchSubmit}
       />
-    </form>
+    </div>
   );
 };
 
-export default Search;
+export default NoteSearch;

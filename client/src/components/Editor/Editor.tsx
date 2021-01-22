@@ -1,6 +1,8 @@
-import React, { FormEvent } from 'react';
+import React from 'react';
+import { Divider, Input } from 'antd';
 import { INote } from '../../types';
-import './Editor.css';
+import { DeleteOutlined, SaveOutlined } from '@ant-design/icons';
+// import './Editor.css';
 
 interface EditorProps {
   note?: INote | undefined;
@@ -17,44 +19,65 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
   const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
     props.onContentChange(e.target.value);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  function saveNote() {
     if (!props.note?.title || props.note.title == '')
       return console.log('TODO title required');
 
     props.onSubmit(props.note);
-  };
+  }
 
-  const handleDeleteNote = () => {
+  function deleteNote() {
     if (props.note !== undefined) props.onDeleteNote(props.note);
-  };
+  }
 
   return (
     <>
-      <form className="editor" onSubmit={handleSubmit}>
-        <div className="editor-header">
-          <input
-            className="title"
-            name="title"
-            type="text"
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100%',
+          padding: '22px',
+        }}
+      >
+        <div
+          style={{
+            display: 'inline-flex',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Input
+            bordered={false}
             value={props.note?.title || ''}
             onChange={handleTitleChange}
+            style={{ fontSize: '1.4rem' }}
           />
-          <input className="material-icons icon" type="submit" value="save" />
-          <input
-            className="material-icons icon"
-            type="button"
-            value="delete"
-            onClick={handleDeleteNote}
-          />
+          <div
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              fontSize: '1.15rem',
+            }}
+          >
+            <SaveOutlined onClick={saveNote} style={{ margin: '5px' }} />
+            <DeleteOutlined onClick={deleteNote} style={{ margin: '5px' }} />
+          </div>
         </div>
+        <Divider />
         <textarea
           className="content"
           name="content"
           value={props.note?.content || ''}
           onChange={handleContentChange}
+          style={{
+            height: 'inherit',
+            border: 'none',
+            resize: 'none',
+            backgroundColor: 'transparent',
+            fontFamily: 'Courier New',
+          }}
         />
-      </form>
+      </div>
     </>
   );
 };
