@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'antd';
 import { useHistory } from 'react-router-dom';
-import { useAuth } from '../../context/auth';
-import { ApiService } from '../../services/apiService';
-import { INote } from '../../types';
-import Editor from '../Editor/Editor';
-import Preview from '../Preview/Preview';
-// import './Dashboard.css';
+import { useAuth } from '../context/auth';
+import { ApiService } from '../services/apiService';
+import { INote } from '../types';
+import Editor from './Editor';
+import Preview from './Preview';
 
 interface DashboardProps {
   note?: INote;
@@ -51,7 +50,6 @@ const Dashboard: React.FC<DashboardProps> = (props: DashboardProps) => {
   };
 
   return (
-    // <div className="dashboard">
     <Row style={{ height: '100%' }}>
       <Col span={12}>
         <Editor
@@ -63,7 +61,7 @@ const Dashboard: React.FC<DashboardProps> = (props: DashboardProps) => {
         />
       </Col>
       <Col span={12} style={{ backgroundColor: 'white' }}>
-        <Preview input={'## ' + note.title + '\n' + note.content} />
+        <Preview input={`# ${note.title}\n${note.content}`} />
       </Col>
     </Row>
   );

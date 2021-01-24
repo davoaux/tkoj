@@ -1,7 +1,6 @@
 import React from 'react';
 import marked from 'marked';
 import DOMPurify from 'dompurify';
-// import './Preview.css';
 
 interface PreviewProps {
   input: string;

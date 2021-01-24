@@ -1,6 +1,6 @@
 import React from 'react';
 import { Divider, Input } from 'antd';
-import { INote } from '../../types';
+import { INote } from '../types';
 import { DeleteOutlined, SaveOutlined } from '@ant-design/icons';
 // import './Editor.css';
 

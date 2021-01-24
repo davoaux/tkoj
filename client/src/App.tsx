@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import Application from './components/Application/Application';
+import Application from './components/Application';
 import Login from './components/Login';
 import Register from './components/Register';
 import Settings from './components/Settings';

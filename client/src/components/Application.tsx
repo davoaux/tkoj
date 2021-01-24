@@ -1,14 +1,13 @@
-import { Layout } from 'antd';
 import React, { useEffect, useState } from 'react';
+import { Layout } from 'antd';
 import { Switch } from 'react-router-dom';
-import NotesContext from '../../context/notes';
-import { ApiService } from '../../services/apiService';
-import { INote } from '../../types';
-import UserRoute from '../../utils/UserRoute';
-import Dashboard from '../Dashboard/Dashboard';
-import Footer from '../Footer';
-import SideBar from '../SideBar';
-// import './Application.css';
+import NotesContext from '../context/notes';
+import { ApiService } from '../services/apiService';
+import { INote } from '../types';
+import UserRoute from '../utils/UserRoute';
+import Dashboard from './Dashboard';
+import SideBar from './SideBar';
+import Footer from './Footer';
 
 const Application: React.FC = () => {
   const [notes, setNotes] = useState<INote[]>([]);

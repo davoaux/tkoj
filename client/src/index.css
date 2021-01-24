@@ -19,10 +19,6 @@ code {
 }
 
 :root {
-  --blue: #00bebe;
-  --white01: #f7f7f7;
-  --icon-fg: #313131;
-  --border: rgba(17, 17, 17, 0.1);
   --sidebar-size: 200px;
 }
 
@@ -46,4 +42,56 @@ code {
   margin: 50px auto;
   border-radius: 8px;
   padding: 25px;
+}
+
+textarea.content {
+  height: 100%;
+  border: none;
+  resize: none;
+  background-color: transparent;
+  font-family: 'Courier New';
+}
+
+textarea.content:focus {
+  outline: none;
+}
+
+.preview h1 {
+  font-size: 2.37rem;
+  line-height: 1.23;
+  margin-bottom: 0.5em;
+  color: rgba(0, 0, 0, 0.85);
+  font-weight: 600;
+}
+
+.preview h2 {
+  font-size: 30px;
+  line-height: 1.35;
+  margin-bottom: 0.5em;
+  color: rgba(0, 0, 0, 0.85);
+  font-weight: 600;
+}
+
+.preview h3 {
+  font-size: 24px;
+  line-height: 1.35;
+  margin-bottom: 0.5em;
+  color: rgba(0, 0, 0, 0.85);
+  font-weight: 600;
+}
+
+.preview h4 {
+  font-size: 20px;
+  line-height: 1.4;
+  margin-bottom: 0.5em;
+  color: rgba(0, 0, 0, 0.85);
+  font-weight: 600;
+}
+
+.preview h5 {
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 0.5em;
+  color: rgba(0, 0, 0, 0.85);
+  font-weight: 600;
 }
