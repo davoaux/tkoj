@@ -60,7 +60,7 @@ const Dashboard: React.FC<DashboardProps> = (props: DashboardProps) => {
           onDeleteNote={handleDeleteNote}
         />
       </Col>
-      <Col span={12} style={{ backgroundColor: 'white' }}>
+      <Col span={12} id="preview-container">
         <Preview input={`# ${note.title}\n${note.content}`} />
       </Col>
     </Row>

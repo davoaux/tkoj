@@ -32,7 +32,7 @@ const SideBar: React.FC = () => {
           <div
             style={{
               backgroundColor: 'white',
-              borderRight: '1px solid #f0f0f0',
+              borderRight: '1px solid #F0F0F0',
             }}
           >
             <Input
