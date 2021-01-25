@@ -20,11 +20,29 @@ code {
 
 :root {
   --sidebar-size: 200px;
+  --footer-height: 73px;
 }
 
 #root {
   width: 100%;
   height: 100%;
+  overflow: hidden;
+}
+
+.app-main-container {
+  margin-bottom: var(--footer-height);
+}
+
+#footer {
+  position: fixed;
+  background-color: white;
+  border-top: 1px solid rgb(240, 240, 240);
+  bottom: 0;
+  width: 100%;
+  padding: 20px 35px;
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .prefix-icon {
@@ -44,6 +62,32 @@ code {
   padding: 25px;
 }
 
+.editor {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 22px;
+}
+
+.editor-header {
+  display: inline-flex;
+  justify-content: space-between;
+}
+
+#editor-header-icons {
+  display: inline-flex;
+  align-items: center;
+  font-size: 1.15rem;
+}
+
+#editor-header-icons span {
+  margin: 5px;
+}
+
+.editor-header input {
+  font-size: 1.4rem;
+}
+
 textarea.content {
   height: 100%;
   border: none;
@@ -54,6 +98,11 @@ textarea.content {
 
 textarea.content:focus {
   outline: none;
+}
+
+.preview {
+  height: 0;
+  padding: 22px;
 }
 
 .preview h1 {
@@ -94,4 +143,9 @@ textarea.content:focus {
   margin-bottom: 0.5em;
   color: rgba(0, 0, 0, 0.85);
   font-weight: 600;
+}
+
+#preview-container {
+  background-color: white;
+  overflow: auto;
 }

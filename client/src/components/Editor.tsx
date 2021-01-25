@@ -2,7 +2,6 @@ import React from 'react';
 import { Divider, Input } from 'antd';
 import { INote } from '../types';
 import { DeleteOutlined, SaveOutlined } from '@ant-design/icons';
-// import './Editor.css';
 
 interface EditorProps {
   note?: INote | undefined;
@@ -32,35 +31,16 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
 
   return (
     <>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          height: '100%',
-          padding: '22px',
-        }}
-      >
-        <div
-          style={{
-            display: 'inline-flex',
-            justifyContent: 'space-between',
-          }}
-        >
+      <div className="editor">
+        <div className="editor-header">
           <Input
             bordered={false}
             value={props.note?.title || ''}
             onChange={handleTitleChange}
-            style={{ fontSize: '1.4rem' }}
           />
-          <div
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              fontSize: '1.15rem',
-            }}
-          >
-            <SaveOutlined onClick={saveNote} style={{ margin: '5px' }} />
-            <DeleteOutlined onClick={deleteNote} style={{ margin: '5px' }} />
+          <div id="editor-header-icons">
+            <SaveOutlined onClick={saveNote} />
+            <DeleteOutlined onClick={deleteNote} />
           </div>
         </div>
         <Divider />
@@ -69,13 +49,6 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
           name="content"
           value={props.note?.content || ''}
           onChange={handleContentChange}
-          style={{
-            height: 'inherit',
-            border: 'none',
-            resize: 'none',
-            backgroundColor: 'transparent',
-            fontFamily: 'Courier New',
-          }}
         />
       </div>
     </>

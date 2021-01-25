@@ -28,7 +28,7 @@ const Application: React.FC = () => {
           <SideBar />
         </Layout.Sider>
         <Layout>
-          <Layout.Content>
+          <Layout.Content className="app-main-container">
             <Switch>
               <UserRoute
                 exact
@@ -42,19 +42,7 @@ const Application: React.FC = () => {
               <UserRoute exact path="/*" render={() => <Dashboard />} />
             </Switch>
           </Layout.Content>
-          <Layout.Footer
-            style={{
-              position: 'fixed',
-              backgroundColor: 'white',
-              borderTop: '1px solid rgb(240, 240, 240)',
-              bottom: 0,
-              width: '100%',
-              padding: '20px 35px',
-              display: 'inline-flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
-          >
+          <Layout.Footer id="footer">
             <Footer />
           </Layout.Footer>
         </Layout>

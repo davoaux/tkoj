@@ -10,15 +10,9 @@ const Preview: React.FC<PreviewProps> = ({ input }: PreviewProps) => {
   const value =
     typeof input === 'undefined' || input === null
       ? { __html: '' }
-      : { __html: DOMPurify.sanitize(marked(input)) };
+      : { __html: DOMPurify.sanitize(marked(input)) + '<br>' };
 
-  return (
-    <div
-      className="preview"
-      dangerouslySetInnerHTML={value}
-      style={{ height: '100px', padding: '22px' }}
-    />
-  );
+  return <div className="preview" dangerouslySetInnerHTML={value} />;
 };
 
 export default Preview;
