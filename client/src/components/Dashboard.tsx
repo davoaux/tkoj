@@ -7,11 +7,11 @@ import { INote } from '../types';
 import Editor from './Editor';
 import Preview from './Preview';
 
-interface DashboardProps {
+interface Props {
   note?: INote;
 }
 
-const Dashboard: React.FC<DashboardProps> = (props: DashboardProps) => {
+const Dashboard: React.FC<Props> = (props: Props) => {
   const [note, setNote] = useState<INote>({} as INote);
   const history = useHistory();
   const { user } = useAuth();
