@@ -3,64 +3,53 @@ import { Alert, Button, Form, Input } from 'antd';
 import { useAuth } from '../context/auth';
 import { useHistory } from 'react-router-dom';
 import { IRegisterFields } from '../types';
+import { LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
 
 const Register: React.FC = () => {
   const { isLogged, register, login } = useAuth();
   const history = useHistory();
   const [form] = Form.useForm();
-  const [error, setError] = useState({ status: false, message: '' });
+  const [error, setError] = useState('');
 
   const handleFinish = async (fields: IRegisterFields) => {
     if (isLogged) history.push('/dashboard');
 
     // Register the user
     const response = await register(fields);
-    /* if (!response) return console.log('Sign up error'); */
-    if (!response) return setError({ status: true, message: 'Sign up error' });
+    if (!response) return setError('Sign up error');
 
     // Login the user
     await login(fields.email, fields.password);
     history.push('/');
   };
 
+  const { Item } = Form;
+
   return (
     <div className="form-container">
       <h1>Sign up</h1>
-      {error.status && (
-        <Alert
-          type="error"
-          message={error.message}
-          showIcon
-          style={{ width: 'inherit', marginBottom: '15px' }}
-        />
+      {error && (
+        <Alert className="form-error" type="error" message={error} showIcon />
       )}
       <Form form={form} name="register" onFinish={handleFinish}>
-        <Form.Item name="name" rules={[{ required: true }]}>
-          <Input
-            prefix={
-              <span className="prefix-icon material-icons">account_box</span>
-            }
-            placeholder="Name"
-          />
-        </Form.Item>
-        <Form.Item name="email" rules={[{ required: true }, { type: 'email' }]}>
-          <Input
-            prefix={<span className="prefix-icon material-icons">email</span>}
-            placeholder="Email"
-          />
-        </Form.Item>
-        <Form.Item name="password" rules={[{ required: true }]}>
+        <Item name="name" rules={[{ required: true }]}>
+          <Input prefix={<UserOutlined />} placeholder="Name" />
+        </Item>
+        <Item name="email" rules={[{ required: true }, { type: 'email' }]}>
+          <Input prefix={<MailOutlined />} placeholder="Email" />
+        </Item>
+        <Item name="password" rules={[{ required: true }]}>
           <Input
             type="password"
-            prefix={<span className="prefix-icon material-icons">lock</span>}
+            prefix={<LockOutlined />}
             placeholder="Password"
           />
-        </Form.Item>
-        <Form.Item>
+        </Item>
+        <Item>
           <Button type="primary" htmlType="submit">
             Create account
           </Button>
-        </Form.Item>
+        </Item>
       </Form>
     </div>
   );

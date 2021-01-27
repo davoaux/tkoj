@@ -62,6 +62,11 @@ code {
   padding: 25px;
 }
 
+.form-error {
+  width: 224px;
+  margin-bottom: 15px !important;
+}
+
 .editor {
   display: flex;
   flex-direction: column;
@@ -94,6 +99,7 @@ textarea.content {
   resize: none;
   background-color: transparent;
   font-family: 'Courier New';
+  font-size: 0.85rem;
 }
 
 textarea.content:focus {
@@ -103,6 +109,15 @@ textarea.content:focus {
 .preview {
   height: 0;
   padding: 22px;
+}
+
+.preview pre {
+  padding: 16px;
+  overflow: auto;
+  font-size: 85%;
+  line-height: 1.45;
+  background-color: #f7f7f7;
+  border-radius: 4px;
 }
 
 .preview h1 {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Col, Row } from 'antd';
+import { Col, notification, Row } from 'antd';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../context/auth';
 import { ApiService } from '../services/apiService';
@@ -28,25 +28,18 @@ const Dashboard: React.FC<DashboardProps> = (props: DashboardProps) => {
     setNote({ ...note, title });
 
   const handleSubmit = async (note: INote): Promise<void> => {
-    const api = new ApiService();
-    const response = await api.updateNote(note);
-
-    if (!response) console.log('save failed');
-    else console.log('note saved');
-
-    window.location.reload();
+    const response = await new ApiService().updateNote(note);
+    if (!response) notification['error']({ message: 'Error saving note' });
+    else notification['success']({ message: 'Note saved' });
   };
 
   const handleDeleteNote = async (note: INote): Promise<void> => {
     const deleted = await new ApiService().deleteNote(note);
     if (!deleted) {
-      return console.log('Error deleting note');
-    } else {
-      console.log('Note deleted');
-
-      history.push('/');
-      window.location.reload();
+      return notification['error']({ message: 'Error deleting note' });
     }
+    history.push('/');
+    window.location.reload();
   };
 
   return (
@@ -61,7 +54,7 @@ const Dashboard: React.FC<DashboardProps> = (props: DashboardProps) => {
         />
       </Col>
       <Col span={12} id="preview-container">
-        <Preview input={`# ${note.title}\n${note.content}`} />
+        <Preview input={`# ${note.title || ''}\n${note.content || ''}`} />
       </Col>
     </Row>
   );

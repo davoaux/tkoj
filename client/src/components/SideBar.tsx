@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Input, Menu } from 'antd';
+import { Input, Menu, Modal, notification } from 'antd';
 import { useHistory } from 'react-router-dom';
-import { FileTextOutlined } from '@ant-design/icons';
+import { FileTextOutlined, PlusOutlined } from '@ant-design/icons';
 import { useAuth } from '../context/auth';
 import NotesContext from '../context/notes';
 import { ApiService } from '../services/apiService';
@@ -9,61 +9,65 @@ import { INote } from '../types';
 
 const SideBar: React.FC = () => {
   const [title, setTitle] = useState('');
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [modalError, setModalError] = useState(false);
   const history = useHistory();
   const { user } = useAuth();
+  const { Item, SubMenu } = Menu;
 
-  const handleCreateNote = async () => {
-    const note = await new ApiService().createNote({
-      title,
-      userId: user?._id,
-    } as INote);
+  const hideModal = () => {
+    setIsModalVisible(false);
+    setModalError(false);
+  };
+  const showModal = () => setIsModalVisible(true);
 
-    if (!note) console.log('Error creating note');
-    else console.log('Note saved');
-
+  async function handleCreateNote() {
+    if (!title) return setModalError(true);
+    const api = new ApiService();
+    const note = await api.createNote({ title, userId: user?._id } as INote);
+    if (!note) {
+      return notification['error']({ message: 'Error creating a new note' });
+    }
     history.push(`/n/${note?._id}`);
     window.location.reload();
-  };
+  }
 
   return (
     <NotesContext.Consumer>
       {(notes) => (
-        <>
-          <div
-            style={{
-              backgroundColor: 'white',
-              borderRight: '1px solid #F0F0F0',
-            }}
+        <Menu
+          mode="inline"
+          defaultOpenKeys={['notes']}
+          style={{ height: '100%' }}
+        >
+          <Item title="Create note" onClick={showModal}>
+            <PlusOutlined />
+            Create note
+          </Item>
+          <Modal
+            title="Create note"
+            visible={isModalVisible}
+            onOk={handleCreateNote}
+            onCancel={hideModal}
           >
+            {modalError && <p style={{ color: '#ff4d4f' }}>Title required</p>}
             <Input
-              placeholder="Create new note"
-              style={{
-                margin: '10px 0 7px 5px',
-                width: '180px',
-                left: '4px',
-                textAlign: 'center',
-              }}
+              placeholder="Title"
               onChange={(e) => setTitle(e.target.value)}
               onPressEnter={handleCreateNote}
             />
-          </div>
-          <Menu
-            mode="inline"
-            defaultOpenKeys={['notes']}
-            style={{ height: '100%' }}
-          >
-            <Menu.SubMenu key="notes" title="Notes" icon={<FileTextOutlined />}>
-              {notes.map((note) => (
-                <Menu.Item
-                  key={note._id}
-                  onClick={({ key }) => history.push(`/n/${key}`)}
-                >
-                  {note.title}
-                </Menu.Item>
-              ))}
-            </Menu.SubMenu>
-          </Menu>
-        </>
+          </Modal>
+          <SubMenu key="notes" title="Notes" icon={<FileTextOutlined />}>
+            {notes.map((note) => (
+              <Item
+                key={note._id}
+                onClick={({ key }) => history.push(`/n/${key}`)}
+              >
+                {note.title}
+              </Item>
+            ))}
+          </SubMenu>
+        </Menu>
       )}
     </NotesContext.Consumer>
   );

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Input, Modal, Popconfirm } from 'antd';
+import { Button, Input, Modal, notification, Popconfirm } from 'antd';
 import { IUser } from '../../../types';
 import { ApiService } from '../../../services/apiService';
 import { useAuth } from '../../../context/auth';
@@ -23,10 +23,10 @@ const Account: React.FC<ISettingsSection> = ({ user }: ISettingsSection) => {
   const [newPasswordConfirm, setNewPasswordConfirm] = useState('');
 
   const handleDeleteAccount = async () => {
-    // TODO error notify
-    const deleted = await new ApiService().deleteUser(user?._id || 'noid');
-    if (!deleted) console.log(`Error deleting user with id ${user?._id}`);
-    else console.log(`User with id ${user?._id} deleted`);
+    const deleted = await new ApiService().deleteUser(user?._id || '');
+    if (!deleted) {
+      return notification['error']({ message: 'Error deleting user' });
+    }
     logout();
   };
 

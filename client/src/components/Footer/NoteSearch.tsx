@@ -11,7 +11,6 @@ const NoteSearch: React.FC = () => {
 
   const handleSearchSubmit = (e: FormEvent) => {
     e.preventDefault();
-    console.log(search);
     const id = notes.find((note) => note.title == search)?._id;
     if (id) history.push(`/n/${id}`);
   };

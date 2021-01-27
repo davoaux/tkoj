@@ -1,5 +1,5 @@
 import React from 'react';
-import { Divider, Input } from 'antd';
+import { Divider, Input, notification } from 'antd';
 import { INote } from '../types';
 import { DeleteOutlined, SaveOutlined } from '@ant-design/icons';
 
@@ -20,7 +20,10 @@ const Editor: React.FC<EditorProps> = (props: EditorProps) => {
 
   function saveNote() {
     if (!props.note?.title || props.note.title == '')
-      return console.log('TODO title required');
+      return notification['error']({
+        message: 'Error saving note',
+        description: 'Title required',
+      });
 
     props.onSubmit(props.note);
   }
