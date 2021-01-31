@@ -6,6 +6,7 @@ const auth = require('../middlewares/check-auth');
 // Authentication routes
 router.post('/register', userController.register);
 router.post('/login', userController.login);
+router.put('/change_password', auth, userController.changePassword);
 
 // User routes
 router.get('/users', auth, userController.getAllUsers);

@@ -30,7 +30,7 @@ const Login: React.FC = () => {
         <Alert type="error" className="form-error" message={error} showIcon />
       )}
       <Form form={form} name="login" onFinish={handleFinish}>
-        <Item name="email" rules={[{ required: true }, { type: 'email' }]}>
+        <Item name="email" rules={[{ required: true }]}>
           <Input prefix={<MailOutlined />} placeholder="Email" />
         </Item>
         <Item name="password" rules={[{ required: true }]}>

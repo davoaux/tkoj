@@ -9,6 +9,7 @@ import Preview from './Preview';
 
 interface Props {
   note?: INote;
+  updateNotesState: Function;
 }
 
 const Dashboard: React.FC<Props> = (props: Props) => {
@@ -29,8 +30,11 @@ const Dashboard: React.FC<Props> = (props: Props) => {
 
   const handleSubmit = async (note: INote): Promise<void> => {
     const response = await new ApiService().updateNote(note);
-    if (!response) notification['error']({ message: 'Error saving note' });
-    else notification['success']({ message: 'Note saved' });
+    if (!response) {
+      return notification['error']({ message: 'Error saving note' });
+    }
+    notification['success']({ message: 'Note saved' });
+    props.updateNotesState(note);
   };
 
   const handleDeleteNote = async (note: INote): Promise<void> => {

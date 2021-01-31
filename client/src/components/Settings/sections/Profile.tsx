@@ -28,7 +28,7 @@ const Profile: React.FC<ISettingsSection> = ({ user }: ISettingsSection) => {
   };
 
   return (
-    <div style={{ padding: '5px 15px 15px 15px' }}>
+    <div className="tab-panel-container">
       <h2>Edit profile</h2>
       {error.status && (
         <Alert
@@ -46,14 +46,18 @@ const Profile: React.FC<ISettingsSection> = ({ user }: ISettingsSection) => {
           style={{ width: 'inherit', marginBottom: '15px' }}
         />
       )}
-      <label>Name</label>
-      <Input
-        value={editedUser.name}
-        onChange={(e) => setEditedUser({ ...editedUser, name: e.target.value })}
-      />
-      <br />
-      <br />
-      <Button onClick={userUpdate}>Update profile</Button>
+      <div className="tab-panel-container-setting">
+        <label>Name</label>
+        <Input
+          value={editedUser.name}
+          onChange={(e) =>
+            setEditedUser({ ...editedUser, name: e.target.value })
+          }
+        />
+      </div>
+      <div className="tab-panel-container-setting">
+        <Button onClick={userUpdate}>Update profile</Button>
+      </div>
     </div>
   );
 };

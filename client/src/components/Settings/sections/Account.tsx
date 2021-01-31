@@ -1,90 +1,184 @@
 import React, { useState } from 'react';
-import { Button, Input, Modal, notification, Popconfirm } from 'antd';
-import { IUser } from '../../../types';
-import { ApiService } from '../../../services/apiService';
+import { Button, Form, Input, Modal, notification, Popconfirm } from 'antd';
 import { useAuth } from '../../../context/auth';
+import { ApiService } from '../../../services/apiService';
+import { IUser } from '../../../types';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 
 interface ISettingsSection {
-  user?: IUser | null;
+  user: IUser | null;
 }
 
-const Account: React.FC<ISettingsSection> = ({ user }: ISettingsSection) => {
-  const { logout } = useAuth();
+interface IPasswordFields {
+  password: string;
+  confirmPassword: string;
+}
+
+type Modal = 'EMAIL' | 'PASSWORD';
+
+const Account: React.FC<ISettingsSection> = () => {
+  const { logout, user, setUser } = useAuth();
   const [emailModalVisible, setEmailModalVisible] = useState(false);
-  const showEmailModal = () => setEmailModalVisible(true);
-  const hideEmailModal = () => setEmailModalVisible(false);
-
   const [passwordModalVisible, setPasswordModalVisible] = useState(false);
-  const showPasswordModal = () => setPasswordModalVisible(true);
-  const hidePasswordModal = () => setPasswordModalVisible(false);
+  const [email, setEmail] = useState(user?.email || '');
+  const [emailAvailable, setEmailAvailable] = useState(true);
+  const [passwordForm] = Form.useForm();
 
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [newPasswordConfirm, setNewPasswordConfirm] = useState('');
+  const showModal = (modal: Modal, value: boolean) => {
+    switch (modal) {
+      case 'EMAIL':
+        setEmailModalVisible(value);
+        break;
+      case 'PASSWORD':
+        setPasswordModalVisible(value);
+        break;
+      default:
+        break;
+    }
+  };
 
-  const handleDeleteAccount = async () => {
+  async function handleChangePassword({ password }: IPasswordFields) {
+    const errorMsg = 'The password could not be updated. Try again';
+    if (!user?._id) {
+      notification['error']({ message: errorMsg });
+      return showModal('PASSWORD', false);
+    }
+    const service = new ApiService();
+    const updated = await service.changePassword(password, user._id);
+    if (!updated) {
+      notification['error']({ message: errorMsg });
+    } else {
+      notification['success']({ message: 'Password updated' });
+    }
+    return showModal('PASSWORD', false);
+  }
+
+  async function handleDeleteAccount() {
     const deleted = await new ApiService().deleteUser(user?._id || '');
     if (!deleted) {
       return notification['error']({ message: 'Error deleting user' });
     }
     logout();
-  };
+  }
+
+  async function handleChangeEmail() {
+    if (email === user?.email) return;
+    const service = new ApiService();
+    if (await service.getUserByEmail(email || '')) {
+      return setEmailAvailable(false);
+    }
+    const updated = user;
+    if (updated) {
+      updated.email = email;
+      const finalUser = await service.updateUser(updated);
+      if (!finalUser)
+        notification['error']({
+          message: 'The email could not be updated. Try again',
+        });
+      else setUser(finalUser);
+    }
+    showModal('EMAIL', false);
+  }
 
   return (
-    <div style={{ padding: '5px 15px 15px 15px' }}>
-      <label>Email</label>
-      <br />
-      <Button onClick={() => showEmailModal()}>Change email</Button>
-      <Modal
-        title="Change your email"
-        visible={emailModalVisible}
-        onCancel={() => hideEmailModal()}
-        onOk={() => hideEmailModal()}
-      >
-        <Input value={user?.email} readOnly />
-      </Modal>
-      <br />
-      <br />
-      <label>Password</label>
-      <br />
-      <Button onClick={() => showPasswordModal()}>Change password</Button>
-      <Modal
-        title="Change your password"
-        visible={passwordModalVisible}
-        onCancel={() => hidePasswordModal()}
-        onOk={() => hidePasswordModal()}
-      >
-        <Input
-          type="password"
-          placeholder="Current password"
-          value={currentPassword}
-          onChange={(e) => setCurrentPassword(e.target.value)}
-        />
-        <br />
-        <br />
-        <Input
-          type="password"
-          placeholder="New password"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-        />
-        <Input
-          type="password"
-          placeholder="Confirm password"
-          value={newPasswordConfirm}
-          onChange={(e) => setNewPasswordConfirm(e.target.value)}
-        />
-      </Modal>
-      <br />
-      <br />
-      <br />
-      <Popconfirm
-        title="Are you sure you want to delete your account? All of your notes will be deleted aswell."
-        placement="right"
-        onConfirm={handleDeleteAccount}
-      >
-        <Button danger>Delete account</Button>
-      </Popconfirm>
+    <div className="tab-panel-container">
+      <div className="tab-panel-container-setting">
+        <label>Email</label>
+        <Button onClick={() => showModal('EMAIL', true)}>Change email</Button>
+        <Modal
+          title="Change your email"
+          visible={emailModalVisible}
+          onCancel={() => showModal('EMAIL', false)}
+          onOk={handleChangeEmail}
+        >
+          {!emailAvailable && (
+            <p className="input-error-message">Email not available</p>
+          )}
+          <Input
+            className={!emailAvailable ? 'input-error' : ''}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </Modal>
+      </div>
+      <div className="tab-panel-container-setting">
+        <label>Password</label>
+        <Button onClick={() => showModal('PASSWORD', true)}>
+          Change password
+        </Button>
+        <Modal
+          title="Change your password"
+          visible={passwordModalVisible}
+          destroyOnClose
+          footer={null}
+          closable={false}
+        >
+          <Form
+            form={passwordForm}
+            name="changePassword"
+            onFinish={handleChangePassword}
+          >
+            <Form.Item
+              name="password"
+              rules={[
+                { required: true, message: 'Please, insert a new password' },
+              ]}
+              hasFeedback
+            >
+              <Input.Password placeholder="New password" />
+            </Form.Item>
+            <Form.Item
+              name="confirmPassword"
+              dependencies={['password']}
+              hasFeedback
+              rules={[
+                { required: true, message: 'Please, confirm the new password' },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue('password') === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject('The two passwords do not match');
+                  },
+                }),
+              ]}
+            >
+              <Input.Password placeholder="Confirm password" />
+            </Form.Item>
+            <Form.Item style={{ textAlignLast: 'right', marginBottom: 0 }}>
+              <Button onClick={() => showModal('PASSWORD', false)}>
+                Cancel
+              </Button>
+              <Button
+                type="primary"
+                htmlType="submit"
+                style={{ marginLeft: '10px' }}
+              >
+                Update
+              </Button>
+            </Form.Item>
+          </Form>
+        </Modal>
+      </div>
+      <div className="tab-panel-container-setting">
+        <h2 id="danger">Delete account️</h2>
+        <p>
+          Deleting your account is irreversible. Your account, alongside your
+          notes will be deleted.
+        </p>
+        <Popconfirm
+          title="Are you sure?"
+          placement="right"
+          onConfirm={handleDeleteAccount}
+          icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button danger style={{ marginTop: '5px' }}>
+            Delete account
+          </Button>
+        </Popconfirm>
+      </div>
     </div>
   );
 };

@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const Note = require('../../models/Note');
 const User = require('../../models/User');
 const { comparePasswords, generateToken } = require('../../services/auth');
@@ -45,6 +46,18 @@ module.exports = {
       });
     } catch (err) {
       return res.status(500).json({ message: 'Login failed', error: err });
+    }
+  },
+
+  changePassword: async (req, res) => {
+    const { password, id } = req.body;
+    try {
+      const salt = await bcrypt.genSalt(10);
+      const encrypted = await bcrypt.hash(password, salt);
+      await User.findOneAndUpdate({ _id: id }, { password: encrypted });
+      return res.status(200).json({ message: 'Password updated' });
+    } catch (err) {
+      return res.status(500).json({ error: err });
     }
   },
 

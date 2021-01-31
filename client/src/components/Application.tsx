@@ -12,6 +12,14 @@ import Footer from './Footer';
 const Application: React.FC = () => {
   const [notes, setNotes] = useState<INote[]>([]);
 
+  function updateNotesState(note: INote) {
+    const updatedNotes = notes.map((n) => {
+      if (n._id === note._id) n = note;
+      return n;
+    });
+    setNotes(updatedNotes);
+  }
+
   async function loadNotes() {
     const notes = await new ApiService().getNotes();
     setNotes(notes);
@@ -36,10 +44,15 @@ const Application: React.FC = () => {
                 render={({ match }) => (
                   <Dashboard
                     note={notes?.find((note) => note._id === match.params.id)}
+                    updateNotesState={updateNotesState}
                   />
                 )}
               />
-              <UserRoute exact path="/*" render={() => <Dashboard />} />
+              <UserRoute
+                exact
+                path="/*"
+                render={() => <Dashboard updateNotesState={updateNotesState} />}
+              />
             </Switch>
           </Layout.Content>
           <Layout.Footer id="footer">
