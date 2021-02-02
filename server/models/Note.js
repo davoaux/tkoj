@@ -11,7 +11,7 @@ const schema = new Schema({
   content: {
     type: String,
   },
-  links: [
+  tags: [
     {
       type: String,
     },

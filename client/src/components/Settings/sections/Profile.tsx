@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, Button, Input } from 'antd';
+import { Alert, Button, Input, notification } from 'antd';
 import { ApiService } from '../../../services/apiService';
 import { IUser } from '../../../types';
+import { useAuth } from '../../../context/auth';
 
-interface ISettingsSection {
-  user?: IUser | null;
-}
-
-const Profile: React.FC<ISettingsSection> = ({ user }: ISettingsSection) => {
+const Profile: React.FC = () => {
+  const { user } = useAuth();
   const [editedUser, setEditedUser] = useState({} as IUser);
   const [error, setError] = useState({ status: false, message: '' });
-  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     if (user != null) setEditedUser(user);
@@ -23,7 +20,7 @@ const Profile: React.FC<ISettingsSection> = ({ user }: ISettingsSection) => {
       setError({ status: true, message: 'Error updating user profile' });
     } else {
       localStorage.setItem('user', JSON.stringify(updatedUser));
-      setSuccess(true);
+      notification['success']({ message: 'Profile updated correctly' });
     }
   };
 
@@ -34,14 +31,6 @@ const Profile: React.FC<ISettingsSection> = ({ user }: ISettingsSection) => {
         <Alert
           type="error"
           message={error.message}
-          showIcon
-          style={{ width: 'inherit', marginBottom: '15px' }}
-        />
-      )}
-      {success && (
-        <Alert
-          type="success"
-          message="Profile updated correctly"
           showIcon
           style={{ width: 'inherit', marginBottom: '15px' }}
         />

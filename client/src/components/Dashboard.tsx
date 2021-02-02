@@ -48,7 +48,7 @@ const Dashboard: React.FC<Props> = (props: Props) => {
 
   return (
     <Row style={{ height: '100%' }}>
-      <Col span={12}>
+      <Col xs={24} sm={24} md={12}>
         <Editor
           note={note}
           onTitleChange={handleTitleChange}
@@ -57,7 +57,7 @@ const Dashboard: React.FC<Props> = (props: Props) => {
           onDeleteNote={handleDeleteNote}
         />
       </Col>
-      <Col span={12} id="preview-container">
+      <Col xs={0} sm={0} md={12} id="preview-container">
         <Preview input={`# ${note.title || ''}\n${note.content || ''}`} />
       </Col>
     </Row>

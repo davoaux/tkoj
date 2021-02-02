@@ -16,8 +16,8 @@ const Login: React.FC = () => {
     const { email, password } = fields;
 
     // Login the user
-    const user = await login(email, password);
-    if (!user) return setError('Log in error');
+    const res = await login(email, password);
+    if (typeof res === 'string') return setError(res);
     history.push('/');
   };
 

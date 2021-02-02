@@ -1,14 +1,8 @@
-@font-face {
-  font-family: 'Roboto';
-  src: local('Roboto'),
-    url('./fonts/Roboto/Roboto-Regular.ttf') format('truetype');
-}
-
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Roboto', 'Segoe UI', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, system-ui, 'Roboto',
+    'Segoe UI', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+    'Helvetica Neue', sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -153,6 +147,16 @@ textarea.content:focus {
   outline: none;
 }
 
+.footer-settings-section {
+  margin-right: 0;
+}
+
+@media screen and (min-width: 768px) and (min-width: 576px) {
+  .footer-settings-section {
+    margin-right: var(--sidebar-size);
+  }
+}
+
 .preview {
   height: 0;
   padding: 22px;
@@ -171,6 +175,27 @@ textarea.content:focus {
   background-color: #f7f7f7;
   padding: 5px;
   border-radius: 4px;
+}
+
+.preview blockquote {
+  padding-left: 15px;
+  border-left: solid 2px #b7b7b7;
+}
+
+.preview table,
+th,
+tr,
+td {
+  border: solid 1px #dadada;
+  margin-bottom: 20px;
+}
+.preview th,
+td {
+  padding: 10px;
+}
+
+.preview th {
+  font-weight: bold;
 }
 
 .preview h1 {

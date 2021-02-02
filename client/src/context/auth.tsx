@@ -22,17 +22,23 @@ const AuthProvider: React.FC<ProviderProps> = ({ children }: ProviderProps) => {
 
   const service = new AuthService();
 
-  async function register(registerFields: IRegisterFields): Promise<boolean> {
+  async function register(
+    registerFields: IRegisterFields
+  ): Promise<IUser | string> {
     const response = await service.register(registerFields);
-    if (!response.ok) return false;
+    const data = await response.json();
+    if (!response.ok) return data.message;
 
-    return true;
+    return data.user;
   }
 
-  async function login(email: string, password: string): Promise<IUser | null> {
+  async function login(
+    email: string,
+    password: string
+  ): Promise<IUser | string> {
     const response = await service.login(email, password);
-    if (!response.ok) return null;
     const data = await response.json();
+    if (!response.ok) return data.message;
 
     localStorage.setItem('token', data.token);
     localStorage.setItem('user', JSON.stringify(data.user));

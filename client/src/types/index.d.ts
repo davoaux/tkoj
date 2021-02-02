@@ -14,8 +14,8 @@ export interface IAuthContext {
   setIsLogged: (active: boolean) => void;
   user: IUser | null;
   setUser: (user: IUser) => void;
-  register: (registerData: IRegisterData) => Promise<boolean>;
-  login: (email: string, password: string) => Promise<IUser | null>;
+  register: (registerData: IRegisterData) => Promise<IUser | string>;
+  login: (email: string, password: string) => Promise<IUser | string>;
   logout: () => void;
 }
 

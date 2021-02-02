@@ -13,10 +13,7 @@ module.exports = {
       }
       const newUser = await User.create({ name, email, password });
 
-      return res.status(201).json({
-        message: 'User registered',
-        user: newUser,
-      });
+      return res.status(201).json({ user: newUser });
     } catch (err) {
       return res.status(500).json({ message: 'Sign up failed', error: err });
     }

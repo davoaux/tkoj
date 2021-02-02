@@ -40,7 +40,11 @@ const SideBar: React.FC = () => {
           defaultOpenKeys={['notes']}
           style={{ height: '100%' }}
         >
-          <Item title="Create note" onClick={showModal}>
+          <Item
+            title="Create note"
+            onClick={showModal}
+            style={{ borderBottom: 'solid 1px #f7f7f7' }}
+          >
             <PlusOutlined />
             Create note
           </Item>

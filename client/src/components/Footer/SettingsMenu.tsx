@@ -25,7 +25,7 @@ const SettingsMenu: React.FC = () => {
   );
 
   return (
-    <div style={{ marginRight: 'var(--sidebar-size)' }}>
+    <div className="footer-settings-section">
       <Dropdown overlay={menu} placement="topCenter" trigger={['click']}>
         <MoreOutlined style={{ fontSize: '1.4rem' }} />
       </Dropdown>

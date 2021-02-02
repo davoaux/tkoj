@@ -8,9 +8,14 @@ COLOR_INFO    = \033[32m
 
 
 all:
+	@printf "${COLOR_INFO}Use 'make install' to fetch the server and client dependencies${COLOR_RESET}\n"
 	@printf "${COLOR_INFO}Use 'make server' to initialize the mongodb service and the node server${COLOR_RESET}\n"
 	@printf "${COLOR_INFO}Use 'make client' to initialize the react app${COLOR_RESET}\n"
 	@printf "${COLOR_INFO}Use 'make stop' to stop the mongodb service${COLOR_RESET}\n"
+
+install:
+	@cd ${BASE}/server && yarn install
+	@cd ${BASE}/client && yarn install
 
 server:
 	@printf "${COLOR_INFO}🚀 Starting mongodb.service...${COLOR_RESET}\n"
@@ -25,3 +30,6 @@ client:
 stop:
 	@printf "${COLOR_INFO}👋 Stopping mongodb...${COLOR_RESET}\n"
 	@systemctl stop mongodb.service
+
+clean:
+	rm -rfv ${BASE}/*/node_modules

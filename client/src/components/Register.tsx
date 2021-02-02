@@ -15,8 +15,8 @@ const Register: React.FC = () => {
     if (isLogged) history.push('/dashboard');
 
     // Register the user
-    const response = await register(fields);
-    if (!response) return setError('Sign up error');
+    const res = await register(fields);
+    if (typeof res === 'string') return setError(res);
 
     // Login the user
     await login(fields.email, fields.password);

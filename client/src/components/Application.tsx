@@ -32,7 +32,12 @@ const Application: React.FC = () => {
   return (
     <NotesContext.Provider value={notes}>
       <Layout style={{ height: '100%' }}>
-        <Layout.Sider width="var(--sidebar-size)">
+        <Layout.Sider
+          width="var(--sidebar-size)"
+          breakpoint="md"
+          collapsedWidth="0"
+          theme="light"
+        >
           <SideBar />
         </Layout.Sider>
         <Layout>

@@ -2,12 +2,7 @@ import React, { useState } from 'react';
 import { Button, Form, Input, Modal, notification, Popconfirm } from 'antd';
 import { useAuth } from '../../../context/auth';
 import { ApiService } from '../../../services/apiService';
-import { IUser } from '../../../types';
 import { QuestionCircleOutlined } from '@ant-design/icons';
-
-interface ISettingsSection {
-  user: IUser | null;
-}
 
 interface IPasswordFields {
   password: string;
@@ -16,7 +11,7 @@ interface IPasswordFields {
 
 type Modal = 'EMAIL' | 'PASSWORD';
 
-const Account: React.FC<ISettingsSection> = () => {
+const Account: React.FC = () => {
   const { logout, user, setUser } = useAuth();
   const [emailModalVisible, setEmailModalVisible] = useState(false);
   const [passwordModalVisible, setPasswordModalVisible] = useState(false);
@@ -75,7 +70,10 @@ const Account: React.FC<ISettingsSection> = () => {
         notification['error']({
           message: 'The email could not be updated. Try again',
         });
-      else setUser(finalUser);
+      else {
+        setUser(finalUser);
+        notification['success']({ message: 'Email updated correctly' });
+      }
     }
     showModal('EMAIL', false);
   }
