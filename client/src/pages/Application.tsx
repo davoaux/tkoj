@@ -5,9 +5,9 @@ import NotesContext from '../context/notes';
 import { ApiService } from '../services/apiService';
 import { INote } from '../types';
 import UserRoute from '../utils/UserRoute';
-import Dashboard from './Dashboard';
-import SideBar from './SideBar';
-import Footer from './Footer';
+import Dashboard from '../components/Dashboard';
+import SideBar from '../components/SideBar';
+import Footer from '../components/Footer';
 
 const Application: React.FC = () => {
   const [notes, setNotes] = useState<INote[]>([]);

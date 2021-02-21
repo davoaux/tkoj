@@ -28,6 +28,18 @@ const Dashboard: React.FC<Props> = (props: Props) => {
   const handleTitleChange = (title: string): void =>
     setNote({ ...note, title });
 
+  const handleAddTag = (tag: string): void => {
+    const tags = note.tags;
+    tags?.push(tag);
+    setNote({ ...note, tags });
+  };
+
+  const handleCloseTag = (tag: string) => {
+    const tags = note.tags;
+    tags?.splice(tags.indexOf(tag), 1);
+    setNote({ ...note, tags });
+  };
+
   const handleSubmit = async (note: INote): Promise<void> => {
     const response = await new ApiService().updateNote(note);
     if (!response) {
@@ -53,6 +65,8 @@ const Dashboard: React.FC<Props> = (props: Props) => {
           note={note}
           onTitleChange={handleTitleChange}
           onContentChange={handleContentChange}
+          onAddTag={handleAddTag}
+          onCloseTag={handleCloseTag}
           onSubmit={handleSubmit}
           onDeleteNote={handleDeleteNote}
         />

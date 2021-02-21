@@ -31,6 +31,7 @@ export interface IUser {
 export interface INote {
   links?: Array<string>;
   category?: Array<string>;
+  tags?: Array<string>;
   _id?: string;
   title: string;
   content: string;
