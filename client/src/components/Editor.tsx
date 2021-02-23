@@ -7,14 +7,13 @@ interface Props {
   note?: INote;
   onTitleChange: (title: string) => void;
   onContentChange: (content: string) => void;
-  onAddTag: (tag: string) => void;
-  onCloseTag: (tag: string) => void;
+  onTagChange: (tag: string, add: boolean) => void;
   onSubmit: (note: INote) => Promise<void>;
   onDeleteNote: (note: INote) => Promise<void>;
 }
 
 const Editor: React.FC<Props> = (props: Props) => {
-  const [tagDivStatus, setTagDisplayStatus] = useState('none');
+  const [tagDivHidden, setTagDivHidden] = useState(true);
   const [newTag, setNewTag] = useState('');
   const { note } = props;
 
@@ -25,13 +24,11 @@ const Editor: React.FC<Props> = (props: Props) => {
     props.onContentChange(e.target.value);
 
   const handleAddTag = () => {
-    props.onAddTag(newTag);
+    props.onTagChange(newTag, true);
     setNewTag('');
   };
 
-  const handleCloseTag = (tag: string) => {
-    props.onCloseTag(tag);
-  };
+  const handleCloseTag = (tag: string) => props.onTagChange(tag, false);
 
   function saveNote() {
     if (!note?.title || note.title == '')
@@ -46,8 +43,7 @@ const Editor: React.FC<Props> = (props: Props) => {
     if (note !== undefined) props.onDeleteNote(note);
   }
 
-  const toggleTagsDisplay = () =>
-    setTagDisplayStatus(tagDivStatus != 'none' ? 'none' : '');
+  const toggleTagsDisplay = () => setTagDivHidden(!tagDivHidden);
 
   return (
     <>
@@ -64,11 +60,11 @@ const Editor: React.FC<Props> = (props: Props) => {
             <DeleteOutlined onClick={deleteNote} />
           </div>
         </div>
-        <div id="tags" style={{ display: tagDivStatus, marginTop: '15px' }}>
+        <div id="tags" className={tagDivHidden ? 'hidden' : ''}>
           {note?.tags?.map((tag, index) => (
             <Tag
               key={index}
-              color="#262626"
+              color="#838383"
               closable
               onClose={() => handleCloseTag(tag)}
             >
@@ -77,10 +73,10 @@ const Editor: React.FC<Props> = (props: Props) => {
           ))}
           <Input
             size="small"
+            className="tag-input"
             placeholder="add tag..."
             value={newTag}
             onChange={(e) => setNewTag(e.target.value)}
-            style={{ maxWidth: '90px', fontSize: '12px', lineHeight: '20px' }}
             onPressEnter={handleAddTag}
           />
         </div>

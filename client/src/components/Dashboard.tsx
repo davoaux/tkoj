@@ -28,15 +28,10 @@ const Dashboard: React.FC<Props> = (props: Props) => {
   const handleTitleChange = (title: string): void =>
     setNote({ ...note, title });
 
-  const handleAddTag = (tag: string): void => {
+  const handleTagChange = (tag: string, add: boolean) => {
     const tags = note.tags;
-    tags?.push(tag);
-    setNote({ ...note, tags });
-  };
-
-  const handleCloseTag = (tag: string) => {
-    const tags = note.tags;
-    tags?.splice(tags.indexOf(tag), 1);
+    if (add) tags?.push(tag);
+    else tags?.splice(tags.indexOf(tag), 1);
     setNote({ ...note, tags });
   };
 
@@ -65,8 +60,7 @@ const Dashboard: React.FC<Props> = (props: Props) => {
           note={note}
           onTitleChange={handleTitleChange}
           onContentChange={handleContentChange}
-          onAddTag={handleAddTag}
-          onCloseTag={handleCloseTag}
+          onTagChange={handleTagChange}
           onSubmit={handleSubmit}
           onDeleteNote={handleDeleteNote}
         />

@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, system-ui, 'Roboto',
+  font-family: -apple-system, BlinkMacSystemFont, 'Roboto', system-ui,
     'Segoe UI', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
     'Helvetica Neue', sans-serif !important;
   -webkit-font-smoothing: antialiased;
@@ -81,6 +81,21 @@ code {
   color: #2d2d2d;
 }
 
+.hidden {
+  display: none;
+}
+
+.tag-input {
+  max-width: 90px !important;
+  font-size: 12px !important;
+  line-height: 20px !important;
+}
+
+div#tags {
+  margin-top: 15px;
+  margin-left: 11px;
+}
+
 .form-container {
   display: flex;
   flex-direction: column;
@@ -149,12 +164,6 @@ textarea.content:focus {
 
 .footer-settings-section {
   margin-right: 0;
-}
-
-@media screen and (min-width: 768px) and (min-width: 576px) {
-  .footer-settings-section {
-    margin-right: var(--sidebar-size);
-  }
 }
 
 .preview {
@@ -241,4 +250,10 @@ td {
 #preview-container {
   background-color: white;
   overflow: auto;
+}
+
+@media screen and (min-width: 768px) and (min-width: 576px) {
+  .footer-settings-section {
+    margin-right: var(--sidebar-size);
+  }
 }
