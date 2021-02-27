@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
-import { Divider, Input, notification, Tag } from 'antd';
+import React, { useRef, useState } from 'react';
+import { Divider, Input, Tag, Tooltip } from 'antd';
 import { INote } from '../types';
-import { DeleteOutlined, SaveOutlined, TagOutlined } from '@ant-design/icons';
+import {
+  DeleteOutlined,
+  DownloadOutlined,
+  SaveOutlined,
+  TagOutlined,
+} from '@ant-design/icons';
 
 interface Props {
   note?: INote;
@@ -15,6 +20,7 @@ interface Props {
 const Editor: React.FC<Props> = (props: Props) => {
   const [tagDivHidden, setTagDivHidden] = useState(true);
   const [newTag, setNewTag] = useState('');
+  const exportAnchorRef = useRef<HTMLAnchorElement>(null);
   const { note } = props;
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -30,17 +36,27 @@ const Editor: React.FC<Props> = (props: Props) => {
 
   const handleCloseTag = (tag: string) => props.onTagChange(tag, false);
 
+  function downloadNote() {
+    if (!note?.title) return;
+    const content = `# ${note?.title}\n\n${note?.content}`;
+    const fileName = `${note?.title.replaceAll(' ', '-')}.md`;
+    const blob = new Blob([content], { type: 'text/markdown' });
+    const fileDownloadUrl = URL.createObjectURL(blob);
+    if (null != exportAnchorRef.current) {
+      exportAnchorRef.current.href = fileDownloadUrl;
+      exportAnchorRef.current.download = fileName;
+      exportAnchorRef.current.click();
+    }
+    URL.revokeObjectURL(fileDownloadUrl);
+  }
+
   function saveNote() {
-    if (!note?.title || note.title == '')
-      return notification['error']({
-        message: 'Error saving note',
-        description: 'Title required',
-      });
+    if (!note?.title) return;
     props.onSubmit(note);
   }
 
   function deleteNote() {
-    if (note !== undefined) props.onDeleteNote(note);
+    if (note !== undefined && note.title) props.onDeleteNote(note);
   }
 
   const toggleTagsDisplay = () => setTagDivHidden(!tagDivHidden);
@@ -55,11 +71,23 @@ const Editor: React.FC<Props> = (props: Props) => {
             onChange={handleTitleChange}
           />
           <div id="editor-header-icons">
-            <TagOutlined onClick={toggleTagsDisplay} />
-            <SaveOutlined onClick={saveNote} />
-            <DeleteOutlined onClick={deleteNote} />
+            <Tooltip title="Tags" mouseEnterDelay={0.5}>
+              <TagOutlined onClick={toggleTagsDisplay} />
+            </Tooltip>
+            <Tooltip title="Save" mouseEnterDelay={0.5}>
+              <SaveOutlined onClick={saveNote} />
+            </Tooltip>
+            <Tooltip title="Download" mouseEnterDelay={0.5}>
+              <DownloadOutlined onClick={downloadNote} />
+            </Tooltip>
+            <Tooltip title="Delete" mouseEnterDelay={0.5}>
+              <DeleteOutlined onClick={deleteNote} />
+            </Tooltip>
           </div>
         </div>
+        <a style={{ display: 'none' }} href="" download ref={exportAnchorRef}>
+          note export
+        </a>
         <div id="tags" className={tagDivHidden ? 'hidden' : ''}>
           {note?.tags?.map((tag, index) => (
             <Tag

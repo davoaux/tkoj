@@ -22,11 +22,10 @@ const Dashboard: React.FC<Props> = (props: Props) => {
     else setNote({ userId: user?._id } as INote);
   }, [props.note]);
 
-  const handleContentChange = (content: string): void =>
+  const handleContentChange = (content: string) =>
     setNote({ ...note, content });
 
-  const handleTitleChange = (title: string): void =>
-    setNote({ ...note, title });
+  const handleTitleChange = (title: string) => setNote({ ...note, title });
 
   const handleTagChange = (tag: string, add: boolean) => {
     const tags = note.tags;

@@ -62,7 +62,6 @@ code {
 }
 
 .tab-panel-container-setting #danger {
-  color: #f5222d;
   font-weight: 600;
   border-bottom: 1px solid rgb(240, 240, 240);
   padding-bottom: 7px;
@@ -142,7 +141,7 @@ div#tags {
 }
 
 #editor-header-icons span {
-  margin: 5px;
+  margin: 8px;
 }
 
 .editor-header input {
