@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Divider, Input, Tag, Tooltip } from 'antd';
+import { Divider, Input, Popconfirm, Tag, Tooltip } from 'antd';
 import { INote } from '../types';
 import {
   DeleteOutlined,
@@ -81,7 +81,9 @@ const Editor: React.FC<Props> = (props: Props) => {
               <DownloadOutlined onClick={downloadNote} />
             </Tooltip>
             <Tooltip title="Delete" mouseEnterDelay={0.5}>
-              <DeleteOutlined onClick={deleteNote} />
+              <Popconfirm title="Are you sure?" onConfirm={deleteNote}>
+                <DeleteOutlined />
+              </Popconfirm>
             </Tooltip>
           </div>
         </div>

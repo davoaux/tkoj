@@ -40,11 +40,7 @@ const SideBar: React.FC = () => {
           defaultOpenKeys={['notes']}
           style={{ height: '100%' }}
         >
-          <Item
-            title="Create note"
-            onClick={showModal}
-            style={{ borderBottom: 'solid 1px #f7f7f7' }}
-          >
+          <Item id="sb-item-create" title="Create note" onClick={showModal}>
             <PlusOutlined />
             Create note
           </Item>
@@ -61,6 +57,7 @@ const SideBar: React.FC = () => {
               onPressEnter={handleCreateNote}
             />
           </Modal>
+          <div id="sidebar-sep"></div>
           <SubMenu key="notes" title="Notes" icon={<FileTextOutlined />}>
             {notes.map((note) => (
               <Item
