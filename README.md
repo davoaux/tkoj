@@ -1,18 +1,10 @@
-# TKOJ
+<div style="text-align:center">
+  <h1>TKOJ</h1>
+</div>
 
-Write and manage your **markdown** notes.
+Simple markdown editor with live preview
 
-I built this essentially to further my knowledge on **React** and **TypeScript**.
-
-## Install and run
-
-```
-git clone https://github.com/parelkobra/tkoj
-cd tkoj
-npm install
-npm server
-npm client
-```
+I built this essentially to further my knowledge on **React**
 
 ### Usage
 

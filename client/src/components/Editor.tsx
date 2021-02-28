@@ -71,16 +71,16 @@ const Editor: React.FC<Props> = (props: Props) => {
             onChange={handleTitleChange}
           />
           <div id="editor-header-icons">
-            <Tooltip title="Tags" mouseEnterDelay={0.5}>
+            <Tooltip title="Tags">
               <TagOutlined onClick={toggleTagsDisplay} />
             </Tooltip>
-            <Tooltip title="Save" mouseEnterDelay={0.5}>
+            <Tooltip title="Save">
               <SaveOutlined onClick={saveNote} />
             </Tooltip>
-            <Tooltip title="Download" mouseEnterDelay={0.5}>
+            <Tooltip title="Download">
               <DownloadOutlined onClick={downloadNote} />
             </Tooltip>
-            <Tooltip title="Delete" mouseEnterDelay={0.5}>
+            <Tooltip title="Delete">
               <Popconfirm title="Are you sure?" onConfirm={deleteNote}>
                 <DeleteOutlined />
               </Popconfirm>
@@ -94,7 +94,7 @@ const Editor: React.FC<Props> = (props: Props) => {
           {note?.tags?.map((tag, index) => (
             <Tag
               key={index}
-              color="#838383"
+              visible
               closable
               onClose={() => handleCloseTag(tag)}
             >
