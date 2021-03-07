@@ -1,4 +1,4 @@
-<div style="text-align:center">
+<div align='center'>
   <h1>TKOJ</h1>
 </div>
 
@@ -9,9 +9,8 @@ I built this essentially to further my knowledge on **React**
 ### Usage
 
 - `make install` to fetch the server and the client dependencies
-- `make server` to initialize the mongodb service and the server
+- `make server` to initialize the server
 - `make client` to initialize the client
-- `make stop` to stop the mongodb service
 - `make clean` to remove the dependencies of the server and the client
 
 ## Build with
