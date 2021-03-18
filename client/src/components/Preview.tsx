@@ -11,9 +11,7 @@ const Preview: React.FC<PreviewProps> = ({ input }: PreviewProps) => {
     marked.setOptions({
       gfm: true,
       pedantic: false,
-      sanitizer: function (html) {
-        return DOMPurify.sanitize(html);
-      },
+      sanitizer: (html) => DOMPurify.sanitize(html),
       smartLists: true,
     });
   }, []);

@@ -13,7 +13,7 @@ router.get('/users', auth, userController.getAllUsers);
 router.get('/users/:id', auth, userController.getUserById);
 router.put('/users/:id', auth, userController.updateUser);
 router.get('/users/:id/notes', auth, userController.getNotes);
-router.get('/users/email/:email', auth, userController.getUserByEmail);
+router.get('/users/username/:username', auth, userController.getUserByUsername);
 router.delete('/users/:id', auth, userController.deleteUser);
 
 // Note routes

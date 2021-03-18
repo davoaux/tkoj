@@ -1,28 +1,29 @@
 import React, { useState } from 'react';
 import { Button, Form, Input, Modal, notification, Popconfirm } from 'antd';
 import { useAuth } from '../../../context/auth';
-import { ApiService } from '../../../services/apiService';
 import { QuestionCircleOutlined } from '@ant-design/icons';
+import { ApiRequests } from '../../../http/requests';
+import { apiChangePassword } from '../../../http/auth';
 
 interface IPasswordFields {
   password: string;
   confirmPassword: string;
 }
 
-type Modal = 'EMAIL' | 'PASSWORD';
+type Modal = 'USERNAME' | 'PASSWORD';
 
 const Account: React.FC = () => {
   const { logout, user, setUser } = useAuth();
-  const [emailModalVisible, setEmailModalVisible] = useState(false);
+  const [usernameModalVisible, setUsernameModalVisible] = useState(false);
   const [passwordModalVisible, setPasswordModalVisible] = useState(false);
-  const [email, setEmail] = useState(user?.email || '');
-  const [emailAvailable, setEmailAvailable] = useState(true);
+  const [username, setUsername] = useState(user?.username || '');
+  const [usernameAvailable, setUsernameAvailable] = useState(true);
   const [passwordForm] = Form.useForm();
 
   const showModal = (modal: Modal, value: boolean) => {
     switch (modal) {
-      case 'EMAIL':
-        setEmailModalVisible(value);
+      case 'USERNAME':
+        setUsernameModalVisible(value);
         break;
       case 'PASSWORD':
         setPasswordModalVisible(value);
@@ -38,72 +39,68 @@ const Account: React.FC = () => {
       notification['error']({ message: errorMsg });
       return showModal('PASSWORD', false);
     }
-    const service = new ApiService();
-    const updated = await service.changePassword(password, user._id);
+    const updated = await apiChangePassword(password, user._id);
     if (!updated) {
       notification['error']({ message: errorMsg });
     } else {
       notification['success']({ message: 'Password updated' });
     }
+
     return showModal('PASSWORD', false);
   }
 
   async function handleDeleteAccount() {
-    const deleted = await new ApiService().deleteUser(user?._id || '');
+    const deleted = await new ApiRequests().deleteUser(user?._id || '');
     if (!deleted) {
       return notification['error']({ message: 'Error deleting user' });
     }
     logout();
   }
 
-  async function handleChangeEmail() {
-    if (email === user?.email) return;
-    const service = new ApiService();
-    if (await service.getUserByEmail(email || '')) {
-      return setEmailAvailable(false);
+  async function handleChangeUsername() {
+    if (username === user?.username) return;
+    const service = new ApiRequests();
+    if (await service.getUserByUsername(username || '')) {
+      return setUsernameAvailable(false);
     }
     const updated = user;
     if (updated) {
-      updated.email = email;
+      updated.username = username;
       const finalUser = await service.updateUser(updated);
       if (!finalUser)
         notification['error']({
-          message: 'The email could not be updated. Try again',
+          message: 'The username could not be updated. Try again',
         });
       else {
         setUser(finalUser);
-        notification['success']({ message: 'Email updated correctly' });
+        notification['success']({ message: 'Username updated correctly' });
       }
     }
-    showModal('EMAIL', false);
+    showModal('USERNAME', false);
   }
 
   return (
     <div className="tab-panel-container">
       <div className="tab-panel-container-setting">
-        <label>Email</label>
-        <Button onClick={() => showModal('EMAIL', true)}>Change email</Button>
+        <label>Username</label>
+        <Button onClick={() => showModal('USERNAME', true)}>Change username</Button>
         <Modal
-          title="Change your email"
-          visible={emailModalVisible}
-          onCancel={() => showModal('EMAIL', false)}
-          onOk={handleChangeEmail}
+          title="Change your username"
+          visible={usernameModalVisible}
+          onCancel={() => showModal('USERNAME', false)}
+          onOk={handleChangeUsername}
         >
-          {!emailAvailable && (
-            <p className="input-error-message">Email not available</p>
-          )}
+          {!usernameAvailable && <p className="input-error-message">Username not available</p>}
           <Input
-            className={!emailAvailable ? 'input-error' : ''}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            className={!usernameAvailable ? 'input-error' : ''}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
         </Modal>
       </div>
       <div className="tab-panel-container-setting">
         <label>Password</label>
-        <Button onClick={() => showModal('PASSWORD', true)}>
-          Change password
-        </Button>
+        <Button onClick={() => showModal('PASSWORD', true)}>Change password</Button>
         <Modal
           title="Change your password"
           visible={passwordModalVisible}
@@ -111,16 +108,10 @@ const Account: React.FC = () => {
           footer={null}
           closable={false}
         >
-          <Form
-            form={passwordForm}
-            name="changePassword"
-            onFinish={handleChangePassword}
-          >
+          <Form form={passwordForm} name="changePassword" onFinish={handleChangePassword}>
             <Form.Item
               name="password"
-              rules={[
-                { required: true, message: 'Please, insert a new password' },
-              ]}
+              rules={[{ required: true, message: 'Please, insert a new password' }]}
               hasFeedback
             >
               <Input.Password placeholder="New password" />
@@ -144,14 +135,8 @@ const Account: React.FC = () => {
               <Input.Password placeholder="Confirm password" />
             </Form.Item>
             <Form.Item style={{ textAlignLast: 'right', marginBottom: 0 }}>
-              <Button onClick={() => showModal('PASSWORD', false)}>
-                Cancel
-              </Button>
-              <Button
-                type="primary"
-                htmlType="submit"
-                style={{ marginLeft: '10px' }}
-              >
+              <Button onClick={() => showModal('PASSWORD', false)}>Cancel</Button>
+              <Button type="primary" htmlType="submit" style={{ marginLeft: '10px' }}>
                 Update
               </Button>
             </Form.Item>
@@ -161,8 +146,7 @@ const Account: React.FC = () => {
       <div className="tab-panel-container-setting">
         <h2 id="danger">Delete account️</h2>
         <p>
-          Deleting your account is irreversible. Your account, alongside your
-          notes will be deleted.
+          Deleting your account is irreversible. Your account, alongside your notes will be deleted.
         </p>
         <Popconfirm
           title="Are you sure?"

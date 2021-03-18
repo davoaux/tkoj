@@ -1,11 +1,11 @@
 export interface IRegisterFields {
   name: string;
-  email: string;
+  username: string;
   password: string;
 }
 
 export interface ILoginFields {
-  email: string;
+  username: string;
   password: string;
 }
 
@@ -15,7 +15,7 @@ export interface IAuthContext {
   user: IUser | null;
   setUser: (user: IUser) => void;
   register: (registerData: IRegisterData) => Promise<IUser | string>;
-  login: (email: string, password: string) => Promise<IUser | string>;
+  login: (username: string, password: string) => Promise<IUser | string>;
   logout: () => void;
 }
 
@@ -23,7 +23,7 @@ export interface IUser {
   _v: number;
   _id: string;
   name: string;
-  email: string;
+  username: string;
   active: boolean;
   creation: Date;
 }

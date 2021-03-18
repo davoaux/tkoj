@@ -18,9 +18,7 @@ module.exports = {
   createNote: async (req, res) => {
     const { title, userId } = req.body;
     if (!title || !userId) {
-      return res
-        .status(400)
-        .json({ msg: 'Notes must have a title and userId' });
+      return res.status(400).json({ msg: 'Notes must have a title and userId' });
     }
 
     return Note.create(req.body, (err, note) => {

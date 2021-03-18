@@ -5,26 +5,11 @@ const Note = require('./Note');
 const { Schema } = mongoose;
 
 const schema = new Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  active: {
-    type: Boolean,
-    default: true,
-  },
-  creation: {
-    type: Date,
-    default: Date.now(),
-  },
+  name: { type: String, required: true },
+  username: { type: String, minlength: 5, required: true },
+  password: { type: String, required: true },
+  active: { type: Boolean, default: true },
+  creation: { type: Date, default: Date.now() },
 });
 
 // Encrypt password when creating a new user

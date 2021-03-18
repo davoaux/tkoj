@@ -1,6 +1,6 @@
 import jwtDecode, { JwtPayload } from 'jwt-decode';
 import React, { createContext, useContext, useState } from 'react';
-import { AuthService } from '../services/authService';
+import { apiLogin, apiRegister } from '../http/auth';
 import { IUser, IAuthContext, IRegisterFields } from '../types';
 
 interface ProviderProps {
@@ -31,23 +31,16 @@ const AuthProvider: React.FC<ProviderProps> = ({ children }: ProviderProps) => {
     return storedUser ? JSON.parse(storedUser) : null;
   });
 
-  const service = new AuthService();
-
-  async function register(
-    registerFields: IRegisterFields
-  ): Promise<IUser | string> {
-    const response = await service.register(registerFields);
+  async function register(registerFields: IRegisterFields): Promise<IUser | string> {
+    const response = await apiRegister(registerFields);
     const data = await response.json();
     if (!response.ok) return data.message;
 
     return data.user;
   }
 
-  async function login(
-    email: string,
-    password: string
-  ): Promise<IUser | string> {
-    const response = await service.login(email, password);
+  async function login(username: string, password: string): Promise<IUser | string> {
+    const response = await apiLogin(username, password);
     const data = await response.json();
     if (!response.ok) return data.message;
 
@@ -62,7 +55,6 @@ const AuthProvider: React.FC<ProviderProps> = ({ children }: ProviderProps) => {
 
   function logout(): void {
     localStorage.clear();
-
     setIsLogged(false);
     setUser(null);
   }

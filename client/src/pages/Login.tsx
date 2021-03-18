@@ -13,10 +13,10 @@ const Login: React.FC = () => {
 
   const handleFinish = async (fields: ILoginFields) => {
     if (isLogged) history.push('/dashboard');
-    const { email, password } = fields;
+    const { username, password } = fields;
 
     // Login the user
-    const res = await login(email, password);
+    const res = await login(username, password);
     if (typeof res === 'string') return setError(res);
     history.push('/');
   };
@@ -26,19 +26,13 @@ const Login: React.FC = () => {
   return (
     <div className="form-container">
       <h1>Log in</h1>
-      {error && (
-        <Alert type="error" className="form-error" message={error} showIcon />
-      )}
+      {error && <Alert type="error" className="form-error" message={error} showIcon />}
       <Form form={form} name="login" onFinish={handleFinish}>
-        <Item name="email" rules={[{ required: true }]}>
-          <Input prefix={<MailOutlined />} placeholder="Email" />
+        <Item name="username" rules={[{ required: true }]}>
+          <Input prefix={<MailOutlined />} placeholder="Username" />
         </Item>
         <Item name="password" rules={[{ required: true }]}>
-          <Input
-            type="password"
-            prefix={<LockOutlined />}
-            placeholder="Password"
-          />
+          <Input type="password" prefix={<LockOutlined />} placeholder="Password" />
         </Item>
         <Item>
           <Button type="primary" htmlType="submit">

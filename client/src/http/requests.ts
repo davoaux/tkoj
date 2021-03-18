@@ -1,6 +1,6 @@
 import { INote, IUser } from '../types';
 
-interface IApiService {
+interface IApiRequests {
   getNotes(): Promise<INote[]>;
   createNote(note: INote): Promise<INote | null>;
   updateNote(note: INote): Promise<INote | null>;
@@ -9,7 +9,7 @@ interface IApiService {
   deleteUser(id: string): Promise<boolean>;
 }
 
-export class ApiService implements IApiService {
+export class ApiRequests implements IApiRequests {
   private readonly token: string | null;
   private readonly user: IUser | null;
   private readonly defaulHeaders = {};
@@ -30,16 +30,18 @@ export class ApiService implements IApiService {
       headers: this.defaulHeaders,
     });
     const data = await response.json();
+
     return data;
   }
 
-  async getUserByEmail(email: string): Promise<IUser | null> {
-    const response = await fetch(`/api/users/email/${email}`, {
+  async getUserByUsername(username: string): Promise<IUser | null> {
+    const response = await fetch(`/api/users/username/${username}`, {
       method: 'GET',
       headers: this.defaulHeaders,
     });
     if (!response.ok) return null;
     const user = await response.json();
+
     return user;
   }
 
@@ -51,6 +53,7 @@ export class ApiService implements IApiService {
     });
     if (!response.ok) return null;
     const data = await response.json();
+
     return data.note;
   }
 
@@ -62,6 +65,7 @@ export class ApiService implements IApiService {
     });
     if (!response.ok) return null;
     const data = await response.json();
+
     return data.note;
   }
 
@@ -73,17 +77,8 @@ export class ApiService implements IApiService {
     });
     if (!response.ok) return null;
     const data = await response.json();
-    return data;
-  }
 
-  async changePassword(password: string, id: string): Promise<boolean> {
-    const response = await fetch(`/api/change_password`, {
-      method: 'PUT',
-      headers: this.defaulHeaders,
-      body: JSON.stringify({ password, id }),
-    });
-    if (!response.ok) return false;
-    return true;
+    return data;
   }
 
   async deleteNote(note: INote): Promise<boolean> {
@@ -92,8 +87,8 @@ export class ApiService implements IApiService {
       headers: this.defaulHeaders,
       body: JSON.stringify(note),
     });
-    if (!response.ok) return false;
-    return true;
+
+    return response.ok ? true : false;
   }
 
   async deleteUser(id: string): Promise<boolean> {
@@ -101,7 +96,7 @@ export class ApiService implements IApiService {
       method: 'DELETE',
       headers: this.defaulHeaders,
     });
-    if (!response.ok) return false;
-    return true;
+
+    return response.ok ? true : false;
   }
 }

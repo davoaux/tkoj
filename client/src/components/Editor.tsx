@@ -1,12 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Divider, Input, Popconfirm, Tag, Tooltip } from 'antd';
 import { INote } from '../types';
-import {
-  DeleteOutlined,
-  DownloadOutlined,
-  SaveOutlined,
-  TagOutlined,
-} from '@ant-design/icons';
+import { DeleteOutlined, DownloadOutlined, SaveOutlined, TagOutlined } from '@ant-design/icons';
 
 interface Props {
   note?: INote;
@@ -65,11 +60,7 @@ const Editor: React.FC<Props> = (props: Props) => {
     <>
       <div className="editor">
         <div className="editor-header">
-          <Input
-            bordered={false}
-            value={note?.title || ''}
-            onChange={handleTitleChange}
-          />
+          <Input bordered={false} value={note?.title || ''} onChange={handleTitleChange} />
           <div id="editor-header-icons">
             <Tooltip title="Tags">
               <TagOutlined onClick={toggleTagsDisplay} />
@@ -92,12 +83,7 @@ const Editor: React.FC<Props> = (props: Props) => {
         </a>
         <div id="tags" className={tagDivHidden ? 'hidden' : ''}>
           {note?.tags?.map((tag, index) => (
-            <Tag
-              key={index}
-              visible
-              closable
-              onClose={() => handleCloseTag(tag)}
-            >
+            <Tag key={index} visible closable onClose={() => handleCloseTag(tag)}>
               {tag}
             </Tag>
           ))}

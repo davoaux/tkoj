@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Layout } from 'antd';
 import { Switch } from 'react-router-dom';
 import NotesContext from '../context/notes';
-import { ApiService } from '../services/apiService';
 import { INote } from '../types';
 import UserRoute from '../utils/UserRoute';
 import Dashboard from '../components/Dashboard';
 import SideBar from '../components/SideBar';
 import Footer from '../components/Footer';
+import { ApiRequests } from '../http/requests';
 
 const Application: React.FC = () => {
   const [notes, setNotes] = useState<INote[]>([]);
@@ -21,7 +21,7 @@ const Application: React.FC = () => {
   }
 
   async function loadNotes() {
-    const notes = await new ApiService().getNotes();
+    const notes = await new ApiRequests().getNotes();
     setNotes(notes);
   }
 
@@ -32,12 +32,7 @@ const Application: React.FC = () => {
   return (
     <NotesContext.Provider value={notes}>
       <Layout style={{ height: '100%' }}>
-        <Layout.Sider
-          width="var(--sidebar-size)"
-          breakpoint="md"
-          collapsedWidth="0"
-          theme="light"
-        >
+        <Layout.Sider width="var(--sidebar-size)" breakpoint="md" collapsedWidth="0" theme="light">
           <SideBar />
         </Layout.Sider>
         <Layout>

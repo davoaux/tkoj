@@ -38,10 +38,7 @@ const NoteSearch: React.FC = () => {
         onChange={(value) => setSearch(value)}
         onSelect={handleSearchSelect}
       />
-      <SearchOutlined
-        style={{ fontSize: '1.4rem' }}
-        onClick={handleSearchSubmit}
-      />
+      <SearchOutlined style={{ fontSize: '1.4rem' }} onClick={handleSearchSubmit} />
     </div>
   );
 };

@@ -19,7 +19,7 @@ const Register: React.FC = () => {
     if (typeof res === 'string') return setError(res);
 
     // Login the user
-    await login(fields.email, fields.password);
+    await login(fields.username, fields.password);
     history.push('/');
   };
 
@@ -28,22 +28,16 @@ const Register: React.FC = () => {
   return (
     <div className="form-container">
       <h1>Sign up</h1>
-      {error && (
-        <Alert className="form-error" type="error" message={error} showIcon />
-      )}
+      {error && <Alert className="form-error" type="error" message={error} showIcon />}
       <Form form={form} name="register" onFinish={handleFinish}>
         <Item name="name" rules={[{ required: true }]}>
           <Input prefix={<UserOutlined />} placeholder="Name" />
         </Item>
-        <Item name="email" rules={[{ required: true }, { type: 'email' }]}>
-          <Input prefix={<MailOutlined />} placeholder="Email" />
+        <Item name="username" rules={[{ required: true }, { min: 5 }]}>
+          <Input prefix={<MailOutlined />} placeholder="Username" />
         </Item>
         <Item name="password" rules={[{ required: true }]}>
-          <Input
-            type="password"
-            prefix={<LockOutlined />}
-            placeholder="Password"
-          />
+          <Input type="password" prefix={<LockOutlined />} placeholder="Password" />
         </Item>
         <Item>
           <Button type="primary" htmlType="submit">

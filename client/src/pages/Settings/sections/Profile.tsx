@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Button, Input, notification } from 'antd';
-import { ApiService } from '../../../services/apiService';
 import { IUser } from '../../../types';
 import { useAuth } from '../../../context/auth';
+import { ApiRequests } from '../../../http/requests';
 
 const Profile: React.FC = () => {
   const { user } = useAuth();
@@ -15,7 +15,7 @@ const Profile: React.FC = () => {
 
   const userUpdate = async () => {
     if (editedUser === user) return;
-    const updatedUser = await new ApiService().updateUser(editedUser);
+    const updatedUser = await new ApiRequests().updateUser(editedUser);
     if (!updatedUser) {
       setError({ status: true, message: 'Error updating user profile' });
     } else {
@@ -39,9 +39,7 @@ const Profile: React.FC = () => {
         <label>Name</label>
         <Input
           value={editedUser.name}
-          onChange={(e) =>
-            setEditedUser({ ...editedUser, name: e.target.value })
-          }
+          onChange={(e) => setEditedUser({ ...editedUser, name: e.target.value })}
         />
       </div>
       <div className="tab-panel-container-setting">

@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Col, notification, Row } from 'antd';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../context/auth';
-import { ApiService } from '../services/apiService';
 import { INote } from '../types';
 import Editor from './Editor';
 import Preview from './Preview';
+import { ApiRequests } from '../http/requests';
 
 interface Props {
   note?: INote;
@@ -22,8 +22,7 @@ const Dashboard: React.FC<Props> = (props: Props) => {
     else setNote({ userId: user?._id } as INote);
   }, [props.note]);
 
-  const handleContentChange = (content: string) =>
-    setNote({ ...note, content });
+  const handleContentChange = (content: string) => setNote({ ...note, content });
 
   const handleTitleChange = (title: string) => setNote({ ...note, title });
 
@@ -35,7 +34,7 @@ const Dashboard: React.FC<Props> = (props: Props) => {
   };
 
   const handleSubmit = async (note: INote): Promise<void> => {
-    const response = await new ApiService().updateNote(note);
+    const response = await new ApiRequests().updateNote(note);
     if (!response) {
       return notification['error']({ message: 'Error saving note' });
     }
@@ -44,7 +43,7 @@ const Dashboard: React.FC<Props> = (props: Props) => {
   };
 
   const handleDeleteNote = async (note: INote): Promise<void> => {
-    const deleted = await new ApiService().deleteNote(note);
+    const deleted = await new ApiRequests().deleteNote(note);
     if (!deleted) {
       return notification['error']({ message: 'Error deleting note' });
     }
