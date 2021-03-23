@@ -4,7 +4,7 @@
 
 Simple markdown editor with live preview
 
-I built this essentially to further my knowledge on **React**, **Hooks** and the **ContextAPI**
+I built this essentially to further my knowledge on **React**, **Hooks** and the **Context API**
 
 The name was supposed to be an acronym but I ended up building something different and could not think of anything better
 
