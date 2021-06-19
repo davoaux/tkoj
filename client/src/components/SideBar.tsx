@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { FileTextOutlined, PlusOutlined } from '@ant-design/icons';
 import { useAuth } from '../context/auth';
 import NotesContext from '../context/notes';
-import { INote } from '../types';
+import { Note } from '../types';
 import { ApiRequests } from '../http/requests';
 
 const SideBar: React.FC = () => {
@@ -24,7 +24,7 @@ const SideBar: React.FC = () => {
   async function handleCreateNote() {
     if (!title) return setModalError(true);
     const api = new ApiRequests();
-    const note = await api.createNote({ title, userId: user?._id } as INote);
+    const note = await api.createNote({ title, user_id: user?._id } as Note);
     if (!note) {
       return notification['error']({ message: 'Error creating a new note' });
     }

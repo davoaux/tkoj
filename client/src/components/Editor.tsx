@@ -1,15 +1,15 @@
 import React, { useRef, useState } from 'react';
 import { Divider, Input, Popconfirm, Tag, Tooltip } from 'antd';
-import { INote } from '../types';
+import { Note, TagAction } from '../types';
 import { DeleteOutlined, DownloadOutlined, SaveOutlined, TagOutlined } from '@ant-design/icons';
 
 interface Props {
-  note?: INote;
+  note?: Note;
   onTitleChange: (title: string) => void;
   onContentChange: (content: string) => void;
-  onTagChange: (tag: string, add: boolean) => void;
-  onSubmit: (note: INote) => Promise<void>;
-  onDeleteNote: (note: INote) => Promise<void>;
+  onTagChange: (tag: string, action: TagAction) => void;
+  onSubmit: (note: Note) => Promise<void>;
+  onDeleteNote: (note: Note) => Promise<void>;
 }
 
 const Editor: React.FC<Props> = (props: Props) => {
@@ -25,28 +25,32 @@ const Editor: React.FC<Props> = (props: Props) => {
     props.onContentChange(e.target.value);
 
   const handleAddTag = () => {
-    props.onTagChange(newTag, true);
+    props.onTagChange(newTag, 'CREATE');
     setNewTag('');
   };
 
-  const handleCloseTag = (tag: string) => props.onTagChange(tag, false);
+  const handleCloseTag = (tag: string) => props.onTagChange(tag, 'DELETE');
 
   function downloadNote() {
     if (!note?.title) return;
+
     const content = `# ${note?.title}\n\n${note?.content}`;
     const fileName = `${note?.title.replaceAll(' ', '-')}.md`;
     const blob = new Blob([content], { type: 'text/markdown' });
     const fileDownloadUrl = URL.createObjectURL(blob);
+
     if (null != exportAnchorRef.current) {
       exportAnchorRef.current.href = fileDownloadUrl;
       exportAnchorRef.current.download = fileName;
       exportAnchorRef.current.click();
     }
+
     URL.revokeObjectURL(fileDownloadUrl);
   }
 
   function saveNote() {
     if (!note?.title) return;
+
     props.onSubmit(note);
   }
 

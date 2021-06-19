@@ -1,17 +1,8 @@
-import { INote, IUser } from '../types';
+import { Note, User } from '../types';
 
-interface IApiRequests {
-  getNotes(): Promise<INote[]>;
-  createNote(note: INote): Promise<INote | null>;
-  updateNote(note: INote): Promise<INote | null>;
-  updateUser(user: IUser): Promise<IUser | null>;
-  deleteNote(note: INote): Promise<boolean>;
-  deleteUser(id: string): Promise<boolean>;
-}
-
-export class ApiRequests implements IApiRequests {
+export class ApiRequests {
   private readonly token: string | null;
-  private readonly user: IUser | null;
+  private readonly user: User | null;
   private readonly defaulHeaders = {};
 
   constructor() {
@@ -24,79 +15,77 @@ export class ApiRequests implements IApiRequests {
     };
   }
 
-  async getNotes(): Promise<INote[]> {
-    const response = await fetch(`/api/users/${this.user?._id}/notes`, {
+  async getNotes(): Promise<Note[]> {
+    // const response = await fetch(`/api/users/${this.user?._id}/notes`, {
+    const response = await fetch(`http://localhost:4567/api/users/${this.user?._id}/notes`, {
       method: 'GET',
       headers: this.defaulHeaders,
     });
-    const data = await response.json();
 
-    return data;
+    return await response.json();
   }
 
-  async getUserByUsername(username: string): Promise<IUser | null> {
-    const response = await fetch(`/api/users/username/${username}`, {
+  async getUserByUsername(username: string): Promise<User | null> {
+    // const response = await fetch(`/api/users/username/${username}`, {
+    const response = await fetch(`http://localhost:4567/api/users/username/${username}`, {
       method: 'GET',
       headers: this.defaulHeaders,
     });
-    if (!response.ok) return null;
-    const user = await response.json();
 
-    return user;
+    return response.ok ? await response.json() : null;
   }
 
-  async createNote(note: INote): Promise<INote | null> {
-    const response = await fetch('/api/notes', {
+  async createNote(note: Note): Promise<Note | null> {
+    // const response = await fetch('/api/notes', {
+    const response = await fetch('http://localhost:4567/api/notes', {
       method: 'POST',
       headers: this.defaulHeaders,
       body: JSON.stringify(note),
     });
-    if (!response.ok) return null;
-    const data = await response.json();
 
-    return data.note;
+    return response.ok ? await response.json() : null;
   }
 
-  async updateNote(note: INote): Promise<INote | null> {
-    const response = await fetch('/api/notes', {
+  async updateNote(note: Note): Promise<Note | null> {
+    // const response = await fetch('/api/notes', {
+    const response = await fetch('http://localhost:4567/api/notes', {
       method: 'PUT',
       headers: this.defaulHeaders,
       body: JSON.stringify(note),
     });
-    if (!response.ok) return null;
-    const data = await response.json();
 
-    return data.note;
+    return response.ok ? await response.json() : null;
   }
 
-  async updateUser(user: IUser): Promise<IUser | null> {
-    const response = await fetch(`/api/users/${user._id}`, {
+  async updateUser(user: User): Promise<User | null> {
+    // const response = await fetch(`/api/users/${user._id}`, {
+    const response = await fetch(`http://localhost:4567/api/users/${user._id}`, {
       method: 'PUT',
       headers: this.defaulHeaders,
       body: JSON.stringify(user),
     });
-    if (!response.ok) return null;
-    const data = await response.json();
 
-    return data;
+    return response.ok ? await response.json() : null;
   }
 
-  async deleteNote(note: INote): Promise<boolean> {
-    const response = await fetch(`/api/notes/${note._id}`, {
+  async deleteNote(note: Note): Promise<boolean> {
+    // const response = await fetch(`/api/notes/${note._id}`, {
+    const response = await fetch(`http://localhost:4567/api/notes/${note._id}`, {
       method: 'DELETE',
       headers: this.defaulHeaders,
       body: JSON.stringify(note),
     });
 
-    return response.ok ? true : false;
+    return response.ok;
   }
 
   async deleteUser(id: string): Promise<boolean> {
-    const response = await fetch(`/api/users/${id}`, {
+    // const response = await fetch(`/api/users/${id}`, {
+    const response = await fetch(`http://localhost:4567/api/users/${id}`, {
       method: 'DELETE',
       headers: this.defaulHeaders,
     });
 
-    return response.ok ? true : false;
+    return response.ok;
   }
 }

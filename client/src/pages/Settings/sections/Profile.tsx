@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Button, Input, notification } from 'antd';
-import { IUser } from '../../../types';
+import { User } from '../../../types';
 import { useAuth } from '../../../context/auth';
 import { ApiRequests } from '../../../http/requests';
 
 const Profile: React.FC = () => {
   const { user } = useAuth();
-  const [editedUser, setEditedUser] = useState({} as IUser);
+  const [editedUser, setEditedUser] = useState({} as User);
   const [error, setError] = useState({ status: false, message: '' });
 
   useEffect(() => {

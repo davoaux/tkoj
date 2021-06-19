@@ -2,7 +2,8 @@ import { IRegisterFields } from '../types';
 
 export async function apiRegister(data: IRegisterFields): Promise<Response> {
   const { name, username, password } = data;
-  const response = await fetch('/api/register', {
+  // const response = await fetch('/register', {
+  const response = await fetch('http://localhost:4567/register', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ name, username, password }),
@@ -12,7 +13,8 @@ export async function apiRegister(data: IRegisterFields): Promise<Response> {
 }
 
 export async function apiLogin(username: string, password: string): Promise<Response> {
-  const response = await fetch('/api/login', {
+  // const response = await fetch('/login', {
+  const response = await fetch('http://localhost:4567/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password }),
@@ -22,7 +24,8 @@ export async function apiLogin(username: string, password: string): Promise<Resp
 }
 
 export async function apiChangePassword(password: string, id: string): Promise<boolean> {
-  const response = await fetch(`/api/change_password`, {
+  // const response = await fetch('/api/change_password', {
+  const response = await fetch('http://localhost:4567/api/change_password', {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -31,5 +34,5 @@ export async function apiChangePassword(password: string, id: string): Promise<b
     body: JSON.stringify({ password, id }),
   });
 
-  return response.ok ? true : false;
+  return response.ok;
 }

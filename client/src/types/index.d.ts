@@ -19,22 +19,21 @@ export interface IAuthContext {
   logout: () => void;
 }
 
-export interface IUser {
-  _v: number;
+export type User = {
   _id: string;
   name: string;
   username: string;
+  password_digest: string;
   active: boolean;
-  creation: Date;
+  created_at: Date;
 }
 
-export interface INote {
-  links?: Array<string>;
-  category?: Array<string>;
-  tags?: Array<string>;
+export type Note = {
   _id?: string;
   title: string;
   content: string;
-  userId: string;
-  _v?: number;
+  tags: Array<string>;
+  user_id: string;
 }
+
+export type TagAction = 'CREATE' | 'DELETE';

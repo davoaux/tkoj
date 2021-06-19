@@ -1,0 +1,16 @@
+# frozen_string_literal: true
+
+source 'https://rubygems.org'
+
+git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
+
+gem 'bcrypt'
+gem 'dotenv'
+gem 'jwt'
+gem 'mongoid', '~> 7.0' # '~> 7.3'
+gem 'rack-cors'
+gem 'sinatra'
+gem 'sinatra-contrib'
+gem 'thin'
+
+gem 'solargraph', group: :development

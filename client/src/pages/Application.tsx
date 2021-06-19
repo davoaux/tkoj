@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Layout } from 'antd';
 import { Switch } from 'react-router-dom';
 import NotesContext from '../context/notes';
-import { INote } from '../types';
+import { Note } from '../types';
 import UserRoute from '../utils/UserRoute';
 import Dashboard from '../components/Dashboard';
 import SideBar from '../components/SideBar';
@@ -10,9 +10,9 @@ import Footer from '../components/Footer';
 import { ApiRequests } from '../http/requests';
 
 const Application: React.FC = () => {
-  const [notes, setNotes] = useState<INote[]>([]);
+  const [notes, setNotes] = useState<Note[]>([]);
 
-  function updateNotesState(note: INote) {
+  function updateNotesState(note: Note) {
     const updatedNotes = notes.map((n) => {
       if (n._id === note._id) n = note;
       return n;

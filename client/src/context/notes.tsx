@@ -1,6 +1,6 @@
 import { createContext } from 'react';
-import { INote } from '../types';
+import { Note } from '../types';
 
-export const NotesContext = createContext({} as INote[]);
+export const NotesContext = createContext({} as Note[]);
 
 export default NotesContext;
