@@ -37,8 +37,7 @@ const SideBar: React.FC = () => {
       {(notes) => (
         <Menu mode="inline" defaultOpenKeys={['notes']} style={{ height: '100%' }}>
           <Item id="sb-item-create" title="Create note" onClick={showModal}>
-            <PlusOutlined />
-            Create note
+            <PlusOutlined /> Create note
           </Item>
           <Modal
             title="Create note"

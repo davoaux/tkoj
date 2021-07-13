@@ -4,51 +4,36 @@
 
 Simple markdown editor with live preview
 
-I built this essentially to further my knowledge on **React**, **Hooks** and the **Context API**
-
-The name was supposed to be an acronym but I ended up building something different and could not think of anything better
+I built this essentially to further my knowledge on different technologies
 
 ![screenshot](./assets/screenshot0.png)
 
-### Features
-
-- JWT based authentication
-- CRUD notes
-- Markdown live preview
-- Account settings
-- Note searcher
-- Notes download
-- Responsive UI for smaller screens
-- UI error feedback
-
-
 ## Usage
 
-Env file for the server must be on the `server` directory and have the next variables
+You can run this project using **docker** and **docker compose**.
+
+The next environment variables will be required on the **server** service:
 
 ```dosini
-PORT=3001
 MONGODB_URI="Your mongodb server URI"
 JWT_SECRET="Your JWT secret key"
 ```
+You can use any method you'd preffer, such as:
+
+- In the `docker-compose.yml` file
+- Adding in the `server` directory a `.env` file
+- Manually setting the environment variables in your machine
 
 #### Requirements:
 
 - Node.js
 - npm
-- Make
-- Mongodb
-
-Make commands:
-
-- `make install` to fetch the server and the client dependencies
-- `make server` to initialize the server
-- `make client` to initialize the client
-- `make clean` to remove the dependencies of the server and the client
+- ruby
+- bundle
 
 ## Build with
 
 - [React](https://reactjs.org/)
 - [Ant Design](https://ant.design/)
-- [Express](http://expressjs.com/)
-- [MongoDB](https://www.mongodb.com/)
+- [Sinatra](http://sinatrarb.com/)
+- [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)

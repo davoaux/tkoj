@@ -19,7 +19,7 @@ configure do
   end
 end
 
-set :jwt_secret, ENV['JWT_SECRET'] || '$3cr3tK3y'
+set :jwt_secret, ENV['JWT_SECRET']
 
 def generate_token(user_id)
   payload = { id: user_id, exp: Time.now.to_i + 24 * 3600 } # exp: 1 day
