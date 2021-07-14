@@ -12,24 +12,25 @@ I built this essentially to further my knowledge on different technologies
 
 You can run this project using **docker** and **docker compose**.
 
-The next environment variables will be required on the **server** service:
+The next environment variables will be required on the server service:
 
 ```dosini
 MONGODB_URI="Your mongodb server URI"
 JWT_SECRET="Your JWT secret key"
 ```
-You can use any method you'd preffer, such as:
 
-- In the `docker-compose.yml` file
-- Adding in the `server` directory a `.env` file
+You can use any method you'd preffer:
+
+- Adding them in the `docker-compose.yml` file
+- Adding a `.env` file to the `server` directory
 - Manually setting the environment variables in your machine
 
-#### Requirements:
+## Requirements:
 
 - Node.js
 - npm
-- ruby
-- bundle
+- Ruby
+- Bundler
 
 ## Build with
 

@@ -16,8 +16,7 @@ export class ApiRequests {
   }
 
   async getNotes(): Promise<Note[]> {
-    // const response = await fetch(`/api/users/${this.user?._id}/notes`, {
-    const response = await fetch(`http://localhost:4567/api/users/${this.user?._id}/notes`, {
+    const response = await fetch(`/api/users/${this.user?._id}/notes`, {
       method: 'GET',
       headers: this.defaulHeaders,
     });
@@ -26,8 +25,7 @@ export class ApiRequests {
   }
 
   async getUserByUsername(username: string): Promise<User | null> {
-    // const response = await fetch(`/api/users/username/${username}`, {
-    const response = await fetch(`http://localhost:4567/api/users/username/${username}`, {
+    const response = await fetch(`/api/users/username/${username}`, {
       method: 'GET',
       headers: this.defaulHeaders,
     });
@@ -36,8 +34,7 @@ export class ApiRequests {
   }
 
   async createNote(note: Note): Promise<Note | null> {
-    // const response = await fetch('/api/notes', {
-    const response = await fetch('http://localhost:4567/api/notes', {
+    const response = await fetch('/api/notes', {
       method: 'POST',
       headers: this.defaulHeaders,
       body: JSON.stringify(note),
@@ -47,8 +44,7 @@ export class ApiRequests {
   }
 
   async updateNote(note: Note): Promise<Note | null> {
-    // const response = await fetch('/api/notes', {
-    const response = await fetch('http://localhost:4567/api/notes', {
+    const response = await fetch('/api/notes', {
       method: 'PUT',
       headers: this.defaulHeaders,
       body: JSON.stringify(note),
@@ -58,8 +54,7 @@ export class ApiRequests {
   }
 
   async updateUser(user: User): Promise<User | null> {
-    // const response = await fetch(`/api/users/${user._id}`, {
-    const response = await fetch(`http://localhost:4567/api/users/${user._id}`, {
+    const response = await fetch(`/api/users/${user._id}`, {
       method: 'PUT',
       headers: this.defaulHeaders,
       body: JSON.stringify(user),
@@ -69,8 +64,7 @@ export class ApiRequests {
   }
 
   async deleteNote(note: Note): Promise<boolean> {
-    // const response = await fetch(`/api/notes/${note._id}`, {
-    const response = await fetch(`http://localhost:4567/api/notes/${note._id}`, {
+    const response = await fetch(`/api/notes/${note._id}`, {
       method: 'DELETE',
       headers: this.defaulHeaders,
       body: JSON.stringify(note),
@@ -80,8 +74,7 @@ export class ApiRequests {
   }
 
   async deleteUser(id: string): Promise<boolean> {
-    // const response = await fetch(`/api/users/${id}`, {
-    const response = await fetch(`http://localhost:4567/api/users/${id}`, {
+    const response = await fetch(`/api/users/${id}`, {
       method: 'DELETE',
       headers: this.defaulHeaders,
     });
