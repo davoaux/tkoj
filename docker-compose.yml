@@ -12,12 +12,11 @@ services:
 
   client:
     build: ./client
-    command: sh -c "yarn start"
-    working_dir: /app
+    command: /usr/src/app/entrypoint.sh prod
+    working_dir: /usr/src/app
     links:
       - server
     ports:
       - 3000:3000
     volumes:
-      - ./client:/app
-      - /app/node_modules
+      - ./client:/usr/src/app

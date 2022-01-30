@@ -3,12 +3,13 @@
 
 FROM node:16.3.0-alpine
 
-WORKDIR /app
+WORKDIR /usr/src/cache
 
-COPY package*.json ./
-COPY tsconfig.json ./
+COPY package*.json .
+COPY tsconfig.json .
 RUN yarn install --development
 
-COPY . ./
-
-CMD ["yarn", "start"]
+WORKDIR /usr/src/app
+ENV NODE_PATH=/usr/src/app/node_modules/.bin
+COPY . .
+RUN chmod +x /usr/src/app/entrypoint.sh

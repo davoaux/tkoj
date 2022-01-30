@@ -10,13 +10,9 @@ require 'jwt'
 
 configure do
   Mongoid.load!('config/mongoid.yml')
-
-  paths = %w[config/initializers models]
-  paths.each do |path|
-    Dir.each_child(path) do |file|
-      require_relative File.join(path, file)
-    end
-  end
+  require_relative 'config/initializers/mongoid'
+  require_relative 'models/note'
+  require_relative 'models/user'
 end
 
 set :jwt_secret, ENV['JWT_SECRET']
