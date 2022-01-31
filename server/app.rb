@@ -35,7 +35,7 @@ end
 post '/register' do
   data = User.permitted_params(@params)
   user = User.create(data)
-  halt 500, { msg: 'user is not valid' }.to_json unless user.valid?
+  halt 500, { error: 'user is not valid' }.to_json unless user.valid?
 
   status 201
   user.to_json
@@ -44,8 +44,8 @@ end
 post '/login' do
   user = User.find_by(username: @params['username'])
 
-  halt 401, { msg: 'User not found' }.to_json if user.nil?
-  halt 401, { msg: 'Password does not match' }.to_json unless user.authenticate(@params['password'])
+  halt 401, { error: 'User not found' }.to_json if user.nil?
+  halt 401, { error: 'Password does not match' }.to_json unless user.authenticate(@params['password'])
 
   token = generate_token(user.id)
 
@@ -56,24 +56,24 @@ namespace '/api' do
   before do
     decoded_token = verify_token request.env['HTTP_AUTHORIZATION'].split[1]
     user_id = decoded_token[0]['id']['$oid'] unless decoded_token.nil?
-    halt 401, { msg: 'Authorization denied' }.to_json if user_id.nil? || User.find_by(id: user_id).nil?
+    halt 401, { error: 'Authorization denied' }.to_json if user_id.nil? || User.find_by(id: user_id).nil?
   end
 
   helpers do
     def user
-      @user ||= User.find_by(id: params['id']) || halt(404, { msg: 'User not found' }.to_json)
+      User.find_by(id: params['id']) || halt(404, { error: 'User not found' }.to_json)
     end
 
     def note
       id = params['id'] || params['_id']
-      @note ||= Note.find_by(id: id) || halt(404, { msg: 'Note not found' }.to_json)
+      Note.find_by(id: id) || halt(404, { error: 'Note not found' }.to_json)
     end
   end
 
   put '/change_password' do
     data = User.permitted_params(@params)
     user_updated = user.update_attributes(data)
-    halt 500, { msg: 'Error changing password' }.to_json unless user_updated
+    halt 500, { error: 'Error changing password' }.to_json unless user_updated
 
     { msg: 'Password updated' }.to_json
   end
@@ -89,7 +89,7 @@ namespace '/api' do
   put '/users/:id' do
     data = User.permitted_params(@params)
     user_updated = user.update_attributes(data)
-    halt 500, { msg: 'User update failed' }.to_json unless user_updated
+    halt 500, { error: 'User update failed' }.to_json unless user_updated
 
     user.to_json
   end
@@ -100,13 +100,13 @@ namespace '/api' do
 
   get '/users/username/:username' do |username|
     user = User.find_by(username: username)
-    halt 404, { msg: 'User not found' }.to_json unless user
+    halt 404, { error: 'User not found' }.to_json unless user
 
     user.to_json
   end
 
   delete '/users/:id' do
-    halt 500, { msg: 'User could not be deleted' }.to_json unless user.destroy
+    halt 500, { error: 'User could not be deleted' }.to_json unless user.destroy
 
     { msg: 'User deleted', user: user }.to_json
   end
@@ -122,7 +122,7 @@ namespace '/api' do
   post '/notes' do
     data = Note.permitted_params(@params)
     note = Note.create(data)
-    halt 500, { msg: 'Note is not valid' }.to_json unless note.valid?
+    halt 500, { error: 'Note is not valid' }.to_json unless note.valid?
 
     status 201
     note.to_json
@@ -131,13 +131,13 @@ namespace '/api' do
   put '/notes' do
     data = Note.permitted_params(@params)
     note_updated = note.update_attributes(data)
-    halt 500, { msg: 'Note update failed' }.to_json unless note_updated
+    halt 500, { error: 'Note update failed' }.to_json unless note_updated
 
     note.to_json
   end
 
   delete '/notes/:id' do
-    halt 500, { msg: 'Note could not be deleted' }.to_json unless note.destroy
+    halt 500, { error: 'Note could not be deleted' }.to_json unless note.destroy
 
     { msg: 'Note deleted' }.to_json
   end
