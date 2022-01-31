@@ -9,7 +9,8 @@ COPY package*.json .
 COPY tsconfig.json .
 RUN yarn install --development
 
-WORKDIR /usr/src/app
-ENV NODE_PATH=/usr/src/app/node_modules/.bin
+WORKDIR /app
+
+ENV NODE_PATH=/app/node_modules/.bin
 COPY . .
-RUN chmod +x /usr/src/app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
