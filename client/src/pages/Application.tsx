@@ -1,24 +1,14 @@
-import React, { useEffect, useState } from 'react';
 import { Layout } from 'antd';
-import { Switch } from 'react-router-dom';
-import NotesContext from '../context/notes';
-import { Note } from '../types';
-import UserRoute from '../utils/UserRoute';
+import React, { useEffect, useState } from 'react';
 import Dashboard from '../components/Dashboard';
-import SideBar from '../components/SideBar';
 import Footer from '../components/Footer';
+import SideBar from '../components/SideBar';
 import { ApiRequests } from '../http/requests';
+import { Note } from '../types';
 
 const Application: React.FC = () => {
   const [notes, setNotes] = useState<Note[]>([]);
-
-  function updateNotesState(note: Note) {
-    const updatedNotes = notes.map((n) => {
-      if (n._id === note._id) n = note;
-      return n;
-    });
-    setNotes(updatedNotes);
-  }
+  const [note, setNote] = useState<Note>({} as Note);
 
   async function loadNotes() {
     const notes = await new ApiRequests().getNotes();
@@ -30,37 +20,19 @@ const Application: React.FC = () => {
   }, []);
 
   return (
-    <NotesContext.Provider value={notes}>
-      <Layout style={{ height: '100%' }}>
-        <Layout.Sider width="var(--sidebar-size)" breakpoint="md" collapsedWidth="0" theme="light">
-          <SideBar />
-        </Layout.Sider>
-        <Layout>
-          <Layout.Content className="app-main-container">
-            <Switch>
-              <UserRoute
-                exact
-                path="/n/:id"
-                render={({ match }) => (
-                  <Dashboard
-                    note={notes?.find((note) => note._id === match.params.id)}
-                    updateNotesState={updateNotesState}
-                  />
-                )}
-              />
-              <UserRoute
-                exact
-                path="/*"
-                render={() => <Dashboard updateNotesState={updateNotesState} />}
-              />
-            </Switch>
-          </Layout.Content>
-          <Layout.Footer id="footer">
-            <Footer />
-          </Layout.Footer>
-        </Layout>
+    <Layout style={{ height: '100%' }}>
+      <Layout.Sider width="var(--sidebar-size)" breakpoint="md" collapsedWidth="0" theme="light">
+        <SideBar notes={notes} setNote={setNote} loadNotes={loadNotes} />
+      </Layout.Sider>
+      <Layout>
+        <Layout.Content className="app-main-container">
+          <Dashboard note={note} loadNotes={loadNotes} setNote={setNote} />
+        </Layout.Content>
+        <Layout.Footer id="footer">
+          <Footer notes={notes} setNote={setNote} />
+        </Layout.Footer>
       </Layout>
-    </NotesContext.Provider>
+    </Layout>
   );
 };
 

@@ -1,14 +1,15 @@
-import React, { useEffect } from 'react';
-import marked from 'marked';
 import DOMPurify from 'dompurify';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github.css';
+import marked from 'marked';
+import React, { useEffect } from 'react';
+import { Note } from '../types';
 
 interface PreviewProps {
-  input: string;
+  note: Note;
 }
 
-const Preview: React.FC<PreviewProps> = ({ input }: PreviewProps) => {
+const Preview: React.FC<PreviewProps> = ({ note }: PreviewProps) => {
   useEffect(() => {
     marked.setOptions({
       renderer: new marked.Renderer(),
@@ -20,12 +21,9 @@ const Preview: React.FC<PreviewProps> = ({ input }: PreviewProps) => {
     });
   }, []);
 
-  const value =
-    typeof input === 'undefined' || input === null
-      ? { __html: '' }
-      : { __html: marked(input) + '<br>' };
+  const html = { __html: marked(`# ${note.title || ''}\n${note.content || ''}`) };
 
-  return <div className="preview" dangerouslySetInnerHTML={value} />;
+  return <div className="preview" dangerouslySetInnerHTML={html} />;
 };
 
 export default Preview;

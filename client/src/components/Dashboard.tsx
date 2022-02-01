@@ -1,32 +1,24 @@
-import React, { useEffect, useState } from 'react';
 import { Col, notification, Row } from 'antd';
-import { useHistory } from 'react-router-dom';
-import { useAuth } from '../context/auth';
+import React from 'react';
+import { ApiRequests } from '../http/requests';
 import { Note, TagAction } from '../types';
 import Editor from './Editor';
 import Preview from './Preview';
-import { ApiRequests } from '../http/requests';
 
 interface Props {
-  note?: Note;
-  updateNotesState: Function;
+  note: Note;
+  loadNotes: Function;
+  setNote: Function;
 }
 
-const Dashboard: React.FC<Props> = (props: Props) => {
-  const [note, setNote] = useState<Note>({} as Note);
-  const history = useHistory();
-  const { user } = useAuth();
+const Dashboard: React.FC<Props> = ({ note, loadNotes, setNote }) => {
+  const handleNoteChange = (event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = event.currentTarget;
 
-  useEffect(() => {
-    if (props.note) setNote(props.note);
-    else setNote({ user_id: user?._id } as Note);
-  }, [props.note]);
+    setNote({ ...note, [name]: value });
+  };
 
-  const handleContentChange = (content: string) => setNote({ ...note, content });
-
-  const handleTitleChange = (title: string) => setNote({ ...note, title });
-
-  const handleTagChange = (tag: string, action: TagAction) => {
+  const handleTagAction = (tag: string, action: TagAction) => {
     const tags = note.tags ?? [];
 
     if (action == 'CREATE') tags?.push(tag);
@@ -43,18 +35,18 @@ const Dashboard: React.FC<Props> = (props: Props) => {
     }
 
     notification['success']({ message: 'Note saved' });
-    props.updateNotesState(note);
   };
 
-  const handleDeleteNote = async (note: Note): Promise<void> => {
+  const handleNoteDelete = async (note: Note) => {
     const deleted = await new ApiRequests().deleteNote(note);
 
     if (!deleted) {
-      return notification['error']({ message: 'Error deleting note' });
+      notification['error']({ message: 'Error deleting note' });
+      return;
     }
 
-    history.push('/');
-    window.location.reload();
+    loadNotes();
+    setNote({} as Note);
   };
 
   return (
@@ -62,15 +54,14 @@ const Dashboard: React.FC<Props> = (props: Props) => {
       <Col xs={24} sm={24} md={12}>
         <Editor
           note={note}
-          onTitleChange={handleTitleChange}
-          onContentChange={handleContentChange}
-          onTagChange={handleTagChange}
+          handleNoteChange={handleNoteChange}
+          handleTagAction={handleTagAction}
           onSubmit={handleSubmit}
-          onDeleteNote={handleDeleteNote}
+          handleNoteDelete={handleNoteDelete}
         />
       </Col>
       <Col xs={0} sm={0} md={12} id="preview-container">
-        <Preview input={`# ${note.title || ''}\n${note.content || ''}`} />
+        <Preview note={note} />
       </Col>
     </Row>
   );

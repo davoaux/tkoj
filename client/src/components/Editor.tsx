@@ -1,73 +1,77 @@
-import React, { useRef, useState } from 'react';
-import { Divider, Input, Popconfirm, Tag, Tooltip } from 'antd';
-import { Note, TagAction } from '../types';
 import { DeleteOutlined, DownloadOutlined, SaveOutlined, TagOutlined } from '@ant-design/icons';
+import { Divider, Input, Popconfirm, Tag, Tooltip } from 'antd';
+import React, { useRef, useState } from 'react';
+import { Note, TagAction } from '../types';
 
 interface Props {
   note?: Note;
-  onTitleChange: (title: string) => void;
-  onContentChange: (content: string) => void;
-  onTagChange: (tag: string, action: TagAction) => void;
+  handleTagAction: (tag: string, action: TagAction) => void;
   onSubmit: (note: Note) => Promise<void>;
-  onDeleteNote: (note: Note) => Promise<void>;
+  handleNoteChange: (event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  handleNoteDelete: (note: Note) => Promise<void>;
 }
 
-const Editor: React.FC<Props> = (props: Props) => {
-  const [tagDivHidden, setTagDivHidden] = useState(true);
+const Editor: React.FC<Props> = ({
+  note,
+  handleTagAction,
+  handleNoteChange,
+  onSubmit,
+  handleNoteDelete,
+}) => {
+  const [showTags, setShowTags] = useState(false);
   const [newTag, setNewTag] = useState('');
-  const exportAnchorRef = useRef<HTMLAnchorElement>(null);
-  const { note } = props;
-
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    props.onTitleChange(e.target.value);
-
-  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
-    props.onContentChange(e.target.value);
+  const exportRef = useRef<HTMLAnchorElement>(null);
 
   const handleAddTag = () => {
-    props.onTagChange(newTag, 'CREATE');
+    handleTagAction(newTag, 'CREATE');
     setNewTag('');
   };
 
-  const handleCloseTag = (tag: string) => props.onTagChange(tag, 'DELETE');
+  const handleCloseTag = (tag: string) => handleTagAction(tag, 'DELETE');
 
-  function downloadNote() {
+  const downloadNote = () => {
     if (!note?.title) return;
 
     const content = `# ${note?.title}\n\n${note?.content}`;
-    const fileName = `${note?.title.replaceAll(' ', '-')}.md`;
+    const fileName = `${note?.title.trim().replaceAll(' ', '-')}.md`;
     const blob = new Blob([content], { type: 'text/markdown' });
     const fileDownloadUrl = URL.createObjectURL(blob);
 
-    if (null != exportAnchorRef.current) {
-      exportAnchorRef.current.href = fileDownloadUrl;
-      exportAnchorRef.current.download = fileName;
-      exportAnchorRef.current.click();
+    if (null != exportRef.current) {
+      exportRef.current.href = fileDownloadUrl;
+      exportRef.current.download = fileName;
+      exportRef.current.click();
     }
 
     URL.revokeObjectURL(fileDownloadUrl);
-  }
+  };
 
-  function saveNote() {
+  const saveNote = () => {
     if (!note?.title) return;
 
-    props.onSubmit(note);
-  }
+    onSubmit(note);
+  };
 
-  function deleteNote() {
-    if (note !== undefined && note.title) props.onDeleteNote(note);
-  }
-
-  const toggleTagsDisplay = () => setTagDivHidden(!tagDivHidden);
+  const deleteNote = () => {
+    if (note !== undefined && note.title) {
+      handleNoteDelete(note);
+    }
+  };
 
   return (
     <>
       <div className="editor">
         <div className="editor-header">
-          <Input bordered={false} value={note?.title || ''} onChange={handleTitleChange} />
+          <Input
+            bordered={false}
+            autoComplete="off"
+            name="title"
+            value={note?.title || ''}
+            onChange={handleNoteChange}
+          />
           <div id="editor-header-icons">
             <Tooltip title="Tags">
-              <TagOutlined onClick={toggleTagsDisplay} />
+              <TagOutlined onClick={() => setShowTags(!showTags)} />
             </Tooltip>
             <Tooltip title="Save">
               <SaveOutlined onClick={saveNote} />
@@ -82,12 +86,12 @@ const Editor: React.FC<Props> = (props: Props) => {
             </Tooltip>
           </div>
         </div>
-        <a style={{ display: 'none' }} href="" download ref={exportAnchorRef}>
+        <a style={{ display: 'none' }} href="" download ref={exportRef}>
           note export
         </a>
-        <div id="tags" className={tagDivHidden ? 'hidden' : ''}>
-          {note?.tags?.map((tag, index) => (
-            <Tag key={index} visible closable onClose={() => handleCloseTag(tag)}>
+        <div id="tags" className={showTags ? '' : 'hidden'}>
+          {note?.tags?.map((tag, i) => (
+            <Tag key={i} visible closable onClose={() => handleCloseTag(tag)}>
               {tag}
             </Tag>
           ))}
@@ -104,8 +108,8 @@ const Editor: React.FC<Props> = (props: Props) => {
         <textarea
           className="content"
           name="content"
-          value={props.note?.content || ''}
-          onChange={handleContentChange}
+          value={note?.content || ''}
+          onChange={handleNoteChange}
         />
       </div>
     </>
