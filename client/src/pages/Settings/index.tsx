@@ -1,15 +1,15 @@
-import React from 'react';
 import { PageHeader, Tabs } from 'antd';
-import { useHistory } from 'react-router-dom';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Account from './sections/Account';
 import Profile from './sections/Profile';
 
 const Settings: React.FC = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   return (
     <div className="settings">
-      <PageHeader title="Settings" onBack={() => history.goBack()} />
+      <PageHeader title="Settings" onBack={() => navigate(-1)} />
       <Tabs>
         <Tabs.TabPane tab="Profile" key="1">
           <Profile />

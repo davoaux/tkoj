@@ -1,26 +1,29 @@
 import React, { useState } from 'react';
 import { Alert, Button, Form, Input } from 'antd';
 import { useAuth } from '../context/auth';
-import { useHistory } from 'react-router-dom';
 import { IRegisterFields } from '../types';
 import { LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 
 const Register: React.FC = () => {
   const { isLogged, register, login } = useAuth();
-  const history = useHistory();
+  const navigate = useNavigate();
   const [form] = Form.useForm();
   const [error, setError] = useState('');
 
   const handleFinish = async (fields: IRegisterFields) => {
-    if (isLogged) history.push('/dashboard');
-
-    // Register the user
+    if (isLogged) {
+      navigate('/');
+    }
     const res = await register(fields);
-    if (typeof res === 'string') return setError(res);
-
-    // Login the user
+    if (typeof res === 'string') {
+      return setError(res);
+    }
     await login(fields.username, fields.password);
-    history.push('/');
+    if (typeof res === 'string') {
+      return setError(res);
+    }
+    navigate('/');
   };
 
   const { Item } = Form;

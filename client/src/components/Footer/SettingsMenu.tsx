@@ -1,16 +1,16 @@
 import { MoreOutlined } from '@ant-design/icons';
 import { Dropdown, Menu } from 'antd';
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/auth';
 
 const SettingsMenu: React.FC = () => {
   const { logout } = useAuth();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const signOut = () => {
     logout();
-    history.push('/');
+    navigate('/login');
   };
 
   const menu = (
