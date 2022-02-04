@@ -257,8 +257,9 @@ td {
   overflow: auto;
 }
 
-#sb-item-create {
+#note-create {
   margin-top: 8px;
+  height: 72px;
 }
 
 #sidebar-sep {

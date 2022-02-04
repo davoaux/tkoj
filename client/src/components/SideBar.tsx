@@ -1,5 +1,5 @@
-import { FileTextOutlined, PlusOutlined } from '@ant-design/icons';
-import { Input, Menu, Modal, notification } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import { Col, Input, Menu, Modal, notification, Row } from 'antd';
 import React, { useState } from 'react';
 import { useAuth } from '../context/auth';
 import { ApiRequests } from '../http/requests';
@@ -15,10 +15,8 @@ const SideBar: React.FC<Props> = ({ notes, setNote, loadNotes }) => {
   const [title, setTitle] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalError, setModalError] = useState(false);
-
   const { user } = useAuth();
-
-  const { Item, SubMenu } = Menu;
+  const { Item } = Menu;
 
   const hideModal = () => {
     setIsModalVisible(false);
@@ -32,26 +30,38 @@ const SideBar: React.FC<Props> = ({ notes, setNote, loadNotes }) => {
     if (!title) {
       return setModalError(true);
     }
-
     const note = await new ApiRequests().createNote({
       title,
       user_id: user._id,
     } as Note);
-
     if (!note) {
       return notification['error']({ message: 'Error creating a new note' });
     }
-
     setNote(note);
     hideModal();
     loadNotes();
   };
 
   return (
-    <Menu mode="inline" defaultOpenKeys={['notes']} style={{ height: '100%' }}>
-      <Item id="sb-item-create" title="Create note" onClick={showModal}>
-        <PlusOutlined /> Create note
-      </Item>
+    <>
+      <Menu mode="inline" style={{ height: '100%' }}>
+        <Item id="note-create" title="Create note" onClick={showModal}>
+          <Row>
+            <Col span={8}>
+              <b style={{ fontSize: '1.2rem' }}>Notes</b>
+            </Col>
+            <Col span={2} offset={14}>
+              <PlusOutlined />
+            </Col>
+          </Row>
+        </Item>
+        <div id="sidebar-sep"></div>
+        {notes.map((note, i) => (
+          <Item key={i} onClick={() => setNote(note)}>
+            {note.title}
+          </Item>
+        ))}
+      </Menu>
       <Modal
         title="Create note"
         visible={isModalVisible}
@@ -66,15 +76,7 @@ const SideBar: React.FC<Props> = ({ notes, setNote, loadNotes }) => {
           onPressEnter={handleCreateNote}
         />
       </Modal>
-      <div id="sidebar-sep"></div>
-      <SubMenu key="notes" title="Notes" icon={<FileTextOutlined />}>
-        {notes.map((note, i) => (
-          <Item key={i} onClick={() => setNote(note)}>
-            {note.title}
-          </Item>
-        ))}
-      </SubMenu>
-    </Menu>
+    </>
   );
 };
 

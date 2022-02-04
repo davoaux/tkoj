@@ -21,7 +21,7 @@ const Preview: React.FC<PreviewProps> = ({ note }: PreviewProps) => {
     });
   }, []);
 
-  const html = { __html: marked(`# ${note.title || ''}\n${note.content || ''}`) };
+  const html = { __html: marked(`# ${note.title || '&nbsp;'}\n${note.content || ''}`) };
 
   return <div className="preview" dangerouslySetInnerHTML={html} />;
 };
