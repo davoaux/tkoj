@@ -14,37 +14,33 @@ interface Props {
 const Dashboard: React.FC<Props> = ({ note, loadNotes, setNote }) => {
   const handleNoteChange = (event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.currentTarget;
-
     setNote({ ...note, [name]: value });
   };
 
   const handleTagAction = (tag: string, action: TagAction) => {
     const tags = note.tags ?? [];
-
-    if (action == 'CREATE') tags?.push(tag);
-    else if (action == 'DELETE') tags?.splice(tags.indexOf(tag), 1);
-
+    if (action == 'CREATE') {
+      tags?.push(tag);
+    } else if (action == 'DELETE') {
+      tags?.splice(tags.indexOf(tag), 1);
+    }
     setNote({ ...note, tags });
   };
 
   const handleSubmit = async (note: Note): Promise<void> => {
     const response = await new ApiRequests().updateNote(note);
-
     if (!response) {
       return notification['error']({ message: 'Error saving note' });
     }
-
     notification['success']({ message: 'Note saved' });
   };
 
   const handleNoteDelete = async (note: Note) => {
     const deleted = await new ApiRequests().deleteNote(note);
-
     if (!deleted) {
       notification['error']({ message: 'Error deleting note' });
       return;
     }
-
     loadNotes();
     setNote({} as Note);
   };
