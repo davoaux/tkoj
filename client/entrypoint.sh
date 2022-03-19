@@ -2,4 +2,4 @@
 
 cp -r /usr/src/cache/node_modules/. /app/node_modules/
 
-exec yarn start
+exec yarn run dev

@@ -1,29 +1,29 @@
+/* eslint-disable react/no-danger */
 import DOMPurify from 'dompurify';
-import hljs from 'highlight.js';
-import 'highlight.js/styles/github.css';
-import marked from 'marked';
+import { marked } from 'marked';
 import React, { useEffect } from 'react';
 import { Note } from '../types';
 
-interface PreviewProps {
+interface Props {
   note: Note;
 }
 
-const Preview: React.FC<PreviewProps> = ({ note }: PreviewProps) => {
+export const Preview: React.FC<Props> = ({ note: { title, content } }) => {
   useEffect(() => {
     marked.setOptions({
       renderer: new marked.Renderer(),
       gfm: true,
       pedantic: false,
       sanitizer: (html) => DOMPurify.sanitize(html),
-      smartLists: true,
-      highlight: (code) => hljs.highlightAuto(code).value,
+      smartLists: true
     });
   }, []);
 
-  const html = { __html: marked(`# ${note.title || '&nbsp;'}\n${note.content || ''}`) };
-
-  return <div className="preview" dangerouslySetInnerHTML={html} />;
+  return (
+    <div className="basis-1/2 font-markdown">
+      <div
+        dangerouslySetInnerHTML={{ __html: marked.parse(`# ${title || ''}\n${content || ''}`) }}
+      />
+    </div>
+  );
 };
-
-export default Preview;

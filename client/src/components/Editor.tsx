@@ -1,119 +1,51 @@
-import { DeleteOutlined, DownloadOutlined, SaveOutlined, TagOutlined } from '@ant-design/icons';
-import { Divider, Input, Popconfirm, Tag, Tooltip } from 'antd';
-import React, { useRef, useState } from 'react';
-import { Note, TagAction } from '../types';
+import React, { ChangeEvent } from 'react';
+import * as Icon from 'react-feather';
+import { Note } from '../types';
 
 interface Props {
-  note?: Note;
-  handleTagAction: (tag: string, action: TagAction) => void;
-  onSubmit: (note: Note) => Promise<void>;
-  handleNoteChange: (event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-  handleNoteDelete: (note: Note) => Promise<void>;
+  note: Note;
+  setNote: (note: Note) => void;
 }
 
-const Editor: React.FC<Props> = ({
-  note,
-  handleTagAction,
-  handleNoteChange,
-  onSubmit,
-  handleNoteDelete,
-}) => {
-  const [showTags, setShowTags] = useState(false);
-  const [newTag, setNewTag] = useState('');
-  const exportRef = useRef<HTMLAnchorElement>(null);
+export const Editor: React.FC<Props> = ({ note, setNote }) => {
+  const { title, content } = note;
 
-  const handleAddTag = () => {
-    handleTagAction(newTag, 'CREATE');
-    setNewTag('');
-  };
-
-  const handleCloseTag = (tag: string) => handleTagAction(tag, 'DELETE');
-
-  const downloadNote = () => {
-    if (!note?.title) return;
-
-    const content = `# ${note?.title}\n\n${note?.content}`;
-    const fileName = `${note?.title.trim().replaceAll(' ', '-')}.md`;
-    const blob = new Blob([content], { type: 'text/markdown' });
-    const fileDownloadUrl = URL.createObjectURL(blob);
-
-    if (null != exportRef.current) {
-      exportRef.current.href = fileDownloadUrl;
-      exportRef.current.download = fileName;
-      exportRef.current.click();
-    }
-
-    URL.revokeObjectURL(fileDownloadUrl);
-  };
-
-  const saveNote = () => {
-    if (!note?.title) return;
-
-    onSubmit(note);
-  };
-
-  const deleteNote = () => {
-    if (note !== undefined && note.title) {
-      handleNoteDelete(note);
-    }
+  const handleNoteChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = event.currentTarget;
+    setNote({ ...note, [name]: value });
   };
 
   return (
-    <>
-      <div className="editor">
-        <div className="editor-header">
-          <Input
-            bordered={false}
-            autoComplete="off"
-            name="title"
-            value={note?.title || ''}
-            onChange={handleNoteChange}
-          />
-          <div id="editor-header-icons">
-            <Tooltip title="Tags">
-              <TagOutlined onClick={() => setShowTags(!showTags)} />
-            </Tooltip>
-            <Tooltip title="Save">
-              <SaveOutlined onClick={saveNote} />
-            </Tooltip>
-            <Tooltip title="Download">
-              <DownloadOutlined onClick={downloadNote} />
-            </Tooltip>
-            <Tooltip title="Delete">
-              <Popconfirm title="Are you sure?" onConfirm={deleteNote}>
-                <DeleteOutlined />
-              </Popconfirm>
-            </Tooltip>
-          </div>
-        </div>
-        <a style={{ display: 'none' }} href="" download ref={exportRef}>
-          note export
-        </a>
-        <div id="tags" className={showTags ? '' : 'hidden'}>
-          {note?.tags?.map((tag, i) => (
-            <Tag key={i} visible closable onClose={() => handleCloseTag(tag)}>
-              {tag}
-            </Tag>
-          ))}
-          <Input
-            size="small"
-            className="tag-input"
-            placeholder="add tag..."
-            value={newTag}
-            onChange={(e) => setNewTag(e.target.value)}
-            onPressEnter={handleAddTag}
-          />
-        </div>
-        <Divider />
-        <textarea
-          className="content"
-          name="content"
-          value={note?.content || ''}
+    <div className="basis-1/2 border-r border-black">
+      <div className="flex pl-4 h-20 border-b border-black">
+        <input
+          className="w-3/4 text-2xl font-medium focus:outline-none"
+          type="text"
+          name="title"
+          value={title ?? ''}
           onChange={handleNoteChange}
         />
+        <div className="grow inline-flex items-center justify-evenly">
+          <div className="hover:bg-neutral-100 hover:rounded p-2">
+            <Icon.Tag size={18} />
+          </div>
+          <div className="hover:bg-neutral-100 hover:rounded p-2">
+            <Icon.Save size={18} />
+          </div>
+          <div className="hover:bg-neutral-100 hover:rounded p-2">
+            <Icon.Download size={18} />
+          </div>
+          <div className="hover:bg-neutral-100 hover:rounded p-2">
+            <Icon.Trash size={18} />
+          </div>
+        </div>
       </div>
-    </>
+      <textarea
+        className="font-mono p-4 text-sm w-full h-full resize-none focus:outline-none"
+        name="content"
+        value={content ?? ''}
+        onChange={handleNoteChange}
+      />
+    </div>
   );
 };
-
-export default Editor;

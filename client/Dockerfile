@@ -1,7 +1,4 @@
-# run: docker build -t tkoj-client .
-#      docker run -it --rm -v (pwd):/app -v /app/node_modules --network tkoj-network -p 3000:3000 tkoj-client:dev
-
-FROM node:16.3.0-alpine
+FROM node:16.14-alpine
 
 WORKDIR /usr/src/cache
 

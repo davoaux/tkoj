@@ -8,50 +8,52 @@ require 'mongoid'
 require 'json'
 require 'jwt'
 
+require_relative 'config/initializers/mongoid'
+require_relative 'models/note'
+require_relative 'models/user'
+
 configure do
   Mongoid.load!('config/mongoid.yml')
-  require_relative 'config/initializers/mongoid'
-  require_relative 'models/note'
-  require_relative 'models/user'
-end
-
-set :jwt_secret, ENV['JWT_SECRET']
-
-def generate_token(user_id)
-  payload = { id: user_id, exp: Time.now.to_i + 24 * 3600 } # exp: 1 day
-  JWT.encode(payload, :jwt_secret.to_s, 'HS256')
-end
-
-def verify_token(token)
-  JWT.decode(token, :jwt_secret.to_s, true, { algorithm: 'HS256' })
-rescue StandardError
-  nil
+  set :jwt_secret, ENV['JWT_SECRET']
+  set :default_content_type, 'application/json'
 end
 
 before do
+  logger.info request.body.read
+  logger.info request.body.read.class
   @params = JSON.parse(request.body.read) if request.post? || request.put?
 end
 
-post '/register' do
-  data = User.permitted_params(@params)
-  user = User.create(data)
-  halt 500, { error: 'user is not valid' }.to_json unless user.valid?
+# Authentication routes
+namespace '/auth' do
+  helpers do
+    def generate_token(user_id)
+      payload = { id: user_id, exp: Time.now.to_i + 24 * 3600 } # exp: 1 day
+      JWT.encode(payload, :jwt_secret.to_s, 'HS256')
+    end
+  end
 
-  status 201
-  user.to_json
+  post '/signup' do
+    data = User.permitted_params(@params)
+    user = User.create(data)
+    halt 500, { error: 'user is not valid' }.to_json unless user.valid?
+
+    status 201
+    user.to_json
+  end
+
+  post '/login' do
+    user = User.find_by(username: @params['username'])
+    halt 401, { error: 'User not found' }.to_json if user.nil?
+    halt 401, { error: 'Password does not match' }.to_json unless user.authenticate(@params['password'])
+
+    token = generate_token(user.id)
+
+    { token: token, user: user }.to_json
+  end
 end
 
-post '/login' do
-  user = User.find_by(username: @params['username'])
-
-  halt 401, { error: 'User not found' }.to_json if user.nil?
-  halt 401, { error: 'Password does not match' }.to_json unless user.authenticate(@params['password'])
-
-  token = generate_token(user.id)
-
-  { token: token, user: user }.to_json
-end
-
+# API routes
 namespace '/api' do
   before do
     decoded_token = verify_token request.env['HTTP_AUTHORIZATION'].split[1]
@@ -67,6 +69,12 @@ namespace '/api' do
     def note
       id = params['id'] || params['_id']
       Note.find_by(id: id) || halt(404, { error: 'Note not found' }.to_json)
+    end
+
+    def verify_token(token)
+      JWT.decode(token, :jwt_secret.to_s, true, { algorithm: 'HS256' })
+    rescue StandardError
+      nil
     end
   end
 
